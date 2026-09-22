@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="overflow-x-hidden">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>PO PRODUK XOUR - Artisan Sourdough Bakery</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -10,6 +10,9 @@
         tailwind.config = {
             theme: {
                 extend: {
+                    screens: {
+                        'xs': '420px',
+                    },
                     colors: {
                         crust: {
                             50: '#fbf8f2',
@@ -47,7 +50,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
     <style>
-        body {
+        html, body {
+            overflow-x: hidden;
+            max-width: 100vw;
             background-color: #fbf8f2;
             color: #3c2311;
         }
@@ -65,59 +70,59 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col font-sans selection:bg-crust-200">
+<body class="min-h-screen flex flex-col font-sans selection:bg-crust-200 overflow-x-hidden w-full relative">
 
-    <!-- Top Bar: Login status Pelanggan (Hanya muncul jika belum login) -->
-    <div id="customerLoginBar" class="bg-gradient-to-r from-crust-800 via-crust-700 to-crust-800 text-crust-100 text-xs sm:text-sm py-2 px-4 shadow-sm transition-all duration-300">
-        <div class="max-w-6xl mx-auto flex justify-between items-center">
-            <div class="flex items-center space-x-2">
-                <span class="inline-block animate-pulse text-accent">🥖</span>
-                <span>Pre-Order Sourdough Batch Segar. <strong>Klik login untuk memesan</strong></span>
+    <!-- Top Bar: Login status Pelanggan (Hanya muncul di form PO jika belum login) -->
+    <div id="customerLoginBar" class="bg-gradient-to-r from-crust-800 via-crust-700 to-crust-800 text-crust-100 text-xs sm:text-sm py-2 px-3 sm:px-4 shadow-sm transition-all duration-300">
+        <div class="max-w-6xl mx-auto flex justify-between items-center gap-2">
+            <div class="flex items-center space-x-2 min-w-0">
+                <span class="inline-block animate-pulse text-accent flex-shrink-0">🥖</span>
+                <span class="truncate text-[11px] sm:text-xs">Pre-Order Sourdough Batch Segar. <strong>Klik login untuk memesan</strong></span>
             </div>
-            <button onclick="openCustomerAuthModal()" class="bg-crust-50 text-crust-900 hover:bg-crust-200 font-semibold px-3 py-1 rounded-full text-xs transition shadow-sm flex items-center gap-1">
-                <i class="fa-solid fa-arrow-right-to-bracket"></i> Login Pemesan
+            <button onclick="openCustomerAuthModal()" class="bg-crust-50 text-crust-900 hover:bg-crust-200 font-semibold px-2.5 sm:px-3 py-1 rounded-full text-xs transition shadow-sm flex items-center gap-1 flex-shrink-0">
+                <i class="fa-solid fa-arrow-right-to-bracket"></i> <span class="hidden xs:inline">Login</span> Pemesan
             </button>
         </div>
     </div>
 
-    <header class="sticky top-0 z-40 bg-flour/95 backdrop-blur-md border-b border-crust-200 shadow-sm">
-        <div class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
-            <a href="#" onclick="navigateTo('order')" class="flex items-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-crust-700 text-crust-50 flex items-center justify-center font-serif text-2xl font-bold shadow-inner border border-crust-600">
+    <header class="sticky top-0 z-40 bg-flour/95 backdrop-blur-md border-b border-crust-200 shadow-sm max-w-full">
+        <div class="max-w-6xl mx-auto px-3 sm:px-4 py-2.5 sm:py-3 flex items-center justify-between gap-2">
+            <a href="#" onclick="navigateTo('order')" class="flex items-center gap-2 sm:gap-3 min-w-0 flex-shrink">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-crust-700 text-crust-50 flex items-center justify-center font-serif text-xl sm:text-2xl font-bold shadow-inner border border-crust-600 flex-shrink-0">
                     X
                 </div>
-                <div>
-                    <h1 class="font-serif font-bold text-lg sm:text-xl tracking-tight text-crust-900 leading-tight">PO PRODUK XOUR</h1>
-                    <p class="text-[11px] uppercase tracking-wider text-crust-600 font-semibold">Artisan Sourdough Bakery</p>
+                <div class="min-w-0">
+                    <h1 class="font-serif font-bold text-sm sm:text-xl tracking-tight text-crust-900 leading-tight truncate">PO PRODUK XOUR</h1>
+                    <p class="text-[10px] sm:text-[11px] uppercase tracking-wider text-crust-600 font-semibold truncate">Artisan Sourdough Bakery</p>
                 </div>
             </a>
 
-            <div class="flex items-center gap-2 sm:gap-3">
+            <div class="flex items-center gap-1.5 sm:gap-3 flex-shrink-0">
                 <!-- Customer info badge saat sudah login (Bisa diklik untuk perbarui nama & alamat) -->
-                <div id="customerInfoBadge" class="hidden items-center gap-2 bg-crust-100 text-crust-900 px-3 py-1.5 rounded-full border border-crust-300 text-xs sm:text-sm font-medium">
-                    <button onclick="openCustomerProfileModal()" class="flex items-center gap-1.5 hover:text-crust-700 text-left" title="Klik untuk edit profil & alamat">
-                        <i class="fa-solid fa-user-check text-emerald-600"></i>
-                        <span id="customerNameBadge" class="truncate max-w-[90px] sm:max-w-[140px]">Pelanggan</span>
+                <div id="customerInfoBadge" class="hidden items-center gap-1.5 sm:gap-2 bg-crust-100 text-crust-900 px-2 sm:px-3 py-1 sm:py-1.5 rounded-full border border-crust-300 text-xs sm:text-sm font-medium max-w-[130px] xs:max-w-[170px] sm:max-w-none">
+                    <button onclick="openCustomerProfileModal()" class="flex items-center gap-1 hover:text-crust-700 text-left min-w-0" title="Klik untuk edit profil & alamat">
+                        <i class="fa-solid fa-user-check text-emerald-600 text-xs flex-shrink-0"></i>
+                        <span id="customerNameBadge" class="truncate max-w-[55px] xs:max-w-[85px] sm:max-w-[140px] text-[11px] sm:text-xs">Pelanggan</span>
                     </button>
-                    <button onclick="logoutCustomer()" title="Ganti Nomor / Keluar" class="text-crust-500 hover:text-red-600 ml-1">
+                    <button onclick="logoutCustomer()" title="Ganti Nomor / Keluar" class="text-crust-500 hover:text-red-600 ml-0.5 flex-shrink-0 text-xs">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
                     </button>
                 </div>
 
                 <!-- Tombol Riwayat & Status Pesanan Pelanggan -->
-                <button id="customerHistoryBtn" onclick="openCustomerOrdersHistoryModal()" class="bg-white hover:bg-crust-100 text-crust-800 border border-crust-300 px-2.5 sm:px-3.5 py-2 rounded-xl transition shadow-xs flex items-center gap-1.5 text-xs font-semibold" title="Lihat Status & Riwayat Pesanan">
+                <button id="customerHistoryBtn" onclick="openCustomerOrdersHistoryModal()" class="bg-white hover:bg-crust-100 text-crust-800 border border-crust-300 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl transition shadow-xs flex items-center gap-1.5 text-xs font-semibold" title="Lihat Status & Riwayat Pesanan">
                     <i class="fa-solid fa-receipt text-crust-600"></i>
                     <span class="hidden sm:inline">Pesanan Saya</span>
                 </button>
 
                 <!-- Floating Cart Toggle Button -->
-                <button id="cartBtn" onclick="toggleCartModal(true)" class="relative bg-crust-700 hover:bg-crust-800 text-white px-3 sm:px-4 py-2 rounded-xl transition shadow flex items-center gap-2 text-sm font-semibold">
+                <button id="cartBtn" onclick="toggleCartModal(true)" class="relative bg-crust-700 hover:bg-crust-800 text-white px-2.5 sm:px-4 py-1.5 sm:py-2 rounded-xl transition shadow flex items-center gap-1.5 text-xs sm:text-sm font-semibold">
                     <i class="fa-solid fa-bag-shopping"></i>
                     <span class="hidden sm:inline">Keranjang</span>
-                    <span id="cartCount" class="bg-accent text-white text-[11px] font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">0</span>
+                    <span id="cartCount" class="bg-accent text-white text-[11px] font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center">0</span>
                 </button>
 
-                <!-- Shortcut ke dashboard (Disembunyikan sesuai permintaan) -->
+                <!-- Shortcut ke dashboard (Disembunyikan) -->
                 <a href="#dashboard" onclick="navigateTo('dashboard')" class="hidden text-xs text-crust-600 hover:text-crust-900 p-2 rounded-lg hover:bg-crust-100 transition" title="Menu Pengelola Dashboard">
                     <i class="fa-solid fa-sliders text-base"></i>
                 </a>
@@ -126,7 +131,7 @@
     </header>
 
     <!-- Navigasi Bar Cepat (Untuk Pengujian Pindah Halaman) -->
-    <div class="bg-crust-100/90 border-b border-crust-200 px-4 py-2 sticky top-[65px] z-30 backdrop-blur-sm shadow-sm">
+    <div class="bg-crust-100/90 border-b border-crust-200 px-4 py-2 sticky top-[53px] sm:top-[65px] z-30 backdrop-blur-sm shadow-sm max-w-full">
         <div class="max-w-6xl mx-auto flex items-center justify-between gap-2">
             <div class="flex items-center gap-2 text-xs text-crust-800 font-semibold">
                 <span class="inline-flex items-center justify-center w-6 h-6 rounded-lg bg-accent/20 text-accent font-bold text-xs">
@@ -149,7 +154,7 @@
     </div>
 
     <!-- ================= HALAMAN ORDER PELANGGAN ================= -->
-    <main id="orderView" class="flex-grow max-w-6xl w-full mx-auto px-3 sm:px-4 py-6">
+    <main id="orderView" class="flex-grow max-w-6xl w-full mx-auto px-3 sm:px-4 py-5 sm:py-6">
         <!-- Hero Banner Sourdough -->
         <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-crust-800 via-crust-900 to-stone-900 text-white p-5 sm:p-10 mb-6 shadow-xl border border-crust-700">
             <div class="relative z-10 max-w-xl">
@@ -206,7 +211,7 @@
     </main>
 
     <!-- ================= HALAMAN DETAIL PRODUK DENGAN ID (#product/:id) ================= -->
-    <main id="productDetailView" class="hidden flex-grow max-w-4xl w-full mx-auto px-3 sm:px-4 py-6">
+    <main id="productDetailView" class="hidden flex-grow max-w-4xl w-full mx-auto px-3 sm:px-4 py-5 sm:py-6">
         <!-- Tombol Kembali ke Katalog Form PO -->
         <div class="mb-4">
             <button onclick="navigateToCatalog()" class="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-crust-800 hover:text-crust-950 bg-white hover:bg-crust-100 px-4 py-2.5 rounded-2xl border border-crust-200 shadow-sm transition">
@@ -251,13 +256,13 @@
                             <span id="detailModalCode" class="text-[11px] font-mono text-crust-600 bg-crust-100 px-2 py-0.5 rounded-md font-bold uppercase tracking-wider">KODE-ITEM</span>
                             <span id="detailStockModeNotice" class="text-[11px] text-crust-500 font-medium"></span>
                         </div>
-                        <h2 id="detailModalTitle" class="font-serif text-xl sm:text-2xl font-bold text-crust-900 mt-2 leading-snug">Nama Produk</h2>
+                        <h2 id="detailModalTitle" class="font-serif text-xl sm:text-2xl font-bold text-crust-900 mt-2 leading-snug break-words">Nama Produk</h2>
                         <p id="detailModalBakeDate" class="text-xs text-amber-800 font-medium mt-1.5 hidden"></p>
                     </div>
 
                     <div>
                         <h4 class="text-[11px] font-bold uppercase tracking-wider text-crust-700 mb-1.5">Deskripsi Produk:</h4>
-                        <p id="detailModalDesc" class="text-xs sm:text-sm text-crust-800 font-normal leading-relaxed whitespace-pre-line bg-crust-50 p-3.5 rounded-2xl border border-crust-200/70"></p>
+                        <p id="detailModalDesc" class="text-xs sm:text-sm text-crust-800 font-normal leading-relaxed whitespace-pre-line bg-crust-50 p-3.5 rounded-2xl border border-crust-200/70 break-words"></p>
                     </div>
 
                     <div>
@@ -290,7 +295,7 @@
     <!-- ================= HALAMAN DASHBOARD PENGELOLA (#dashboard) ================= -->
     <main id="dashboardView" class="hidden flex-grow max-w-7xl w-full mx-auto px-4 py-6">
         <!-- Auth Barrier Guard -->
-        <div id="adminAuthWall" class="max-w-md mx-auto my-12 bg-white p-8 rounded-3xl border border-crust-200 shadow-xl text-center">
+        <div id="adminAuthWall" class="max-w-md mx-auto my-12 bg-white p-6 sm:p-8 rounded-3xl border border-crust-200 shadow-xl text-center">
             <div class="w-16 h-16 rounded-2xl bg-crust-100 text-crust-700 flex items-center justify-center mx-auto mb-4 text-2xl border border-crust-200">
                 <i class="fa-solid fa-lock"></i>
             </div>
@@ -324,12 +329,13 @@
                 <div>
                     <div class="flex items-center gap-2">
                         <span class="bg-emerald-100 text-emerald-800 text-[11px] font-bold px-2.5 py-0.5 rounded-full border border-emerald-200">Admin Mode Aktif</span>
-                        <span id="currentAdminName" class="text-xs text-crust-600">admin</span>
+                        <span id="currentAdminName" class="text-xs text-crust-600 truncate max-w-[150px]">admin</span>
                     </div>
                     <h2 class="font-serif text-2xl font-bold text-crust-900 mt-1">Pusat Kendali PO PRODUK XOUR</h2>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button onclick="openSupabaseSettingsModal()" class="text-xs bg-crust-100 text-crust-800 hover:bg-crust-200 font-semibold px-3 py-2 rounded-xl transition border border-crust-300 flex items-center gap-1.5">
+                    <!-- Tombol Koneksi Supabase Disembunyikan Sesuai Permintaan -->
+                    <button onclick="openSupabaseSettingsModal()" class="hidden text-xs bg-crust-100 text-crust-800 hover:bg-crust-200 font-semibold px-3 py-2 rounded-xl transition border border-crust-300 items-center gap-1.5">
                         <i class="fa-solid fa-database text-crust-600"></i> Koneksi Supabase
                     </button>
                     <button onclick="logoutAdmin()" class="text-xs bg-rose-50 text-rose-700 hover:bg-rose-100 font-semibold px-3 py-2 rounded-xl transition border border-rose-200 flex items-center gap-1.5">
@@ -565,7 +571,7 @@
 
     <!-- DRAWER: KERANJANG BELANJA (z-50) -->
     <div id="cartModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-end">
-        <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col justify-between border-l border-crust-200">
+        <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col justify-between border-l border-crust-200 max-w-full">
             <!-- Cart Header -->
             <div class="p-4 border-b border-crust-200 flex items-center justify-between bg-flour">
                 <div class="flex items-center gap-2">
@@ -592,8 +598,8 @@
                             <i class="fa-solid fa-pen-to-square text-[10px]"></i> Ubah
                         </button>
                     </div>
-                    <p id="cartDeliveryName" class="font-semibold text-crust-900">-</p>
-                    <p id="cartDeliveryAddress" class="text-crust-600 text-[11px] line-clamp-2 leading-relaxed">Belum ada alamat pengiriman.</p>
+                    <p id="cartDeliveryName" class="font-semibold text-crust-900 break-words leading-tight">-</p>
+                    <p id="cartDeliveryAddress" class="text-crust-600 text-[11px] line-clamp-2 leading-relaxed break-words">Belum ada alamat pengiriman.</p>
                 </div>
 
                 <div class="space-y-1 text-xs">
@@ -607,7 +613,7 @@
                     </div>
                 </div>
 
-                <div class="text-[11px] bg-crust-100/80 p-2.5 rounded-xl text-crust-700 border border-crust-200">
+                <div class="text-[11px] bg-crust-100/80 p-2.5 rounded-xl text-crust-700 border border-crust-200 leading-relaxed">
                     <i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i> Setelah klik order, pesanan masuk ke database dashboard dan dapat langsung dikonfirmasi ke WhatsApp admin.
                 </div>
 
@@ -619,20 +625,20 @@
     </div>
 
     <!-- MODAL: STATUS & RIWAYAT PESANAN PELANGGAN (z-[60]) -->
-    <div id="customerOrdersHistoryModal" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 overflow-y-auto min-h-[100dvh]">
-        <div class="bg-white w-full max-w-2xl rounded-3xl p-5 sm:p-6 shadow-2xl border border-crust-200 max-h-[90vh] flex flex-col my-auto mx-auto">
+    <div id="customerOrdersHistoryModal" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 overflow-y-auto overflow-x-hidden min-h-[100dvh] w-full">
+        <div class="bg-white w-full max-w-[calc(100vw-2rem)] sm:max-w-2xl rounded-3xl p-4 sm:p-6 shadow-2xl border border-crust-200 max-h-[90vh] flex flex-col my-auto mx-auto overflow-hidden">
             <!-- Modal Header -->
             <div class="flex items-center justify-between pb-3 border-b border-crust-200 mb-4 flex-shrink-0">
-                <div class="flex items-center gap-2.5">
-                    <div class="w-10 h-10 rounded-2xl bg-crust-100 text-crust-800 flex items-center justify-center text-lg">
+                <div class="flex items-center gap-2.5 min-w-0">
+                    <div class="w-10 h-10 rounded-2xl bg-crust-100 text-crust-800 flex items-center justify-center text-lg flex-shrink-0">
                         <i class="fa-solid fa-receipt"></i>
                     </div>
-                    <div>
-                        <h3 class="font-serif text-lg font-bold text-crust-900">Status & Riwayat Pesanan</h3>
-                        <p id="historyCustomerPhoneBadge" class="text-xs text-crust-600">Memeriksa pesanan...</p>
+                    <div class="min-w-0">
+                        <h3 class="font-serif text-base sm:text-lg font-bold text-crust-900 truncate">Status & Riwayat Pesanan</h3>
+                        <p id="historyCustomerPhoneBadge" class="text-[11px] sm:text-xs text-crust-600 truncate">Memeriksa pesanan...</p>
                     </div>
                 </div>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1.5 flex-shrink-0">
                     <button onclick="fetchCustomerOrdersHistory()" class="text-xs bg-crust-100 hover:bg-crust-200 text-crust-800 p-2 rounded-xl transition" title="Muat Ulang Riwayat">
                         <i class="fa-solid fa-rotate"></i>
                     </button>
@@ -648,8 +654,8 @@
             </div>
 
             <!-- Modal Footer -->
-            <div class="pt-3 border-t border-crust-100 mt-4 flex items-center justify-between flex-shrink-0 text-xs">
-                <span class="text-crust-500">Ada pertanyaan seputar pesanan?</span>
+            <div class="pt-3 border-t border-crust-100 mt-4 flex flex-col sm:flex-row items-center justify-between gap-2 flex-shrink-0 text-xs">
+                <span class="text-crust-500 text-center sm:text-left">Ada pertanyaan seputar pesanan?</span>
                 <a href="https://wa.me/6287724425959?text=Halo%20Admin%20PO%20PRODUK%20XOUR,%20saya%20ingin%20bertanya%20status%20pesanan%20saya." target="_blank" class="text-emerald-700 hover:text-emerald-800 font-bold flex items-center gap-1.5 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200">
                     <i class="fa-brands fa-whatsapp text-sm"></i> Chat WhatsApp Admin
                 </a>
@@ -658,15 +664,15 @@
     </div>
 
     <!-- MODAL: TOLAK / BATALKAN PESANAN (ADMIN) (z-[65]) -->
-    <div id="adminRejectOrderModal" class="fixed inset-0 z-[65] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto min-h-[100dvh]">
-        <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl border border-crust-200 my-auto mx-auto">
+    <div id="adminRejectOrderModal" class="fixed inset-0 z-[65] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 overflow-y-auto overflow-x-hidden min-h-[100dvh] w-full">
+        <div class="bg-white w-full max-w-[calc(100vw-2rem)] sm:max-w-md rounded-3xl p-5 sm:p-6 shadow-2xl border border-crust-200 my-auto mx-auto overflow-hidden">
             <div class="flex items-center gap-3 pb-3 border-b border-crust-200 mb-4">
-                <div class="w-10 h-10 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center text-lg">
+                <div class="w-10 h-10 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center text-lg flex-shrink-0">
                     <i class="fa-solid fa-ban"></i>
                 </div>
-                <div>
+                <div class="min-w-0">
                     <h3 class="font-serif text-lg font-bold text-crust-900">Tolak / Batalkan Pesanan</h3>
-                    <p id="rejectOrderNumberLabel" class="text-xs text-crust-600 font-mono">Order #ORD-XXXXXX</p>
+                    <p id="rejectOrderNumberLabel" class="text-xs text-crust-600 font-mono truncate">Order #ORD-XXXXXX</p>
                 </div>
             </div>
 
@@ -690,7 +696,7 @@
 
                 <div>
                     <label class="block font-bold text-crust-800 mb-1">Alasan Penolakan / Pembatalan Lengkap *</label>
-                    <textarea id="rejectReasonInput" required rows="3" placeholder="Tuliskan alasan penolakan secara jelas untuk diinfokan ke pelanggan..." class="w-full p-2.5 rounded-xl border border-crust-200 bg-crust-50 focus:ring-2 focus:ring-rose-500 focus:outline-none"></textarea>
+                    <textarea id="rejectReasonInput" required rows="3" placeholder="Tuliskan alasan penolakan secara jelas untuk diinfokan ke pelanggan..." class="w-full p-2.5 rounded-xl border border-crust-200 bg-crust-50 focus:ring-2 focus:ring-rose-500 focus:outline-none leading-relaxed"></textarea>
                     <p class="text-[10px] text-crust-500 mt-1">Alasan ini akan tampil pada riwayat pesanan pelanggan dan stok pesanan otomatis dikembalikan.</p>
                 </div>
 
@@ -703,8 +709,8 @@
     </div>
 
     <!-- MODAL 1: LOGIN PELANGGAN (z-[60] - CENTERED DI HP & DESKTOP) -->
-    <div id="customerAuthModal" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto min-h-[100dvh]">
-        <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl border border-crust-200 transform transition-all my-auto mx-auto">
+    <div id="customerAuthModal" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 overflow-y-auto overflow-x-hidden min-h-[100dvh] w-full">
+        <div class="bg-white w-full max-w-[calc(100vw-2rem)] sm:max-w-sm rounded-3xl p-5 sm:p-6 shadow-2xl border border-crust-200 transform transition-all my-auto mx-auto overflow-hidden">
             <div class="text-center mb-5">
                 <div class="w-14 h-14 rounded-2xl bg-crust-100 text-crust-700 flex items-center justify-center mx-auto mb-3 text-2xl">
                     <i class="fa-brands fa-whatsapp text-emerald-600 text-3xl"></i>
@@ -728,14 +734,14 @@
     </div>
 
     <!-- MODAL 2: PENGATURAN NAMA & ALAMAT PENGIRIMAN (z-[60] - CENTERED DI HP & DESKTOP) -->
-    <div id="customerProfileModal" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto min-h-[100dvh]">
-        <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl border border-crust-200 transform transition-all my-auto mx-auto">
+    <div id="customerProfileModal" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 overflow-y-auto overflow-x-hidden min-h-[100dvh] w-full">
+        <div class="bg-white w-full max-w-[calc(100vw-2rem)] sm:max-w-md rounded-3xl p-5 sm:p-6 shadow-2xl border border-crust-200 transform transition-all my-auto mx-auto overflow-hidden">
             <div class="flex items-center justify-between pb-3 border-b border-crust-200 mb-4">
-                <div>
-                    <h3 class="font-serif text-lg font-bold text-crust-900">Data Pemesan & Pengiriman</h3>
+                <div class="min-w-0 pr-2">
+                    <h3 class="font-serif text-lg font-bold text-crust-900 truncate">Data Pemesan & Pengiriman</h3>
                     <p class="text-[11px] text-crust-500">Lengkapi nama dan alamat lengkap untuk pengantaran pesanan</p>
                 </div>
-                <button onclick="closeCustomerProfileModal()" class="w-8 h-8 rounded-full hover:bg-crust-100 flex items-center justify-center text-crust-600">
+                <button onclick="closeCustomerProfileModal()" class="w-8 h-8 rounded-full hover:bg-crust-100 flex items-center justify-center text-crust-600 flex-shrink-0">
                     <i class="fa-solid fa-xmark"></i>
                 </button>
             </div>
@@ -763,8 +769,8 @@
     </div>
 
     <!-- MODAL: TAMBAH / EDIT PRODUK ADMIN -->
-    <div id="productEditModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto min-h-[100dvh]">
-        <div class="bg-white w-full max-w-2xl rounded-3xl p-6 shadow-2xl border border-crust-200 max-h-[90vh] overflow-y-auto my-auto mx-auto">
+    <div id="productEditModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 overflow-y-auto overflow-x-hidden min-h-[100dvh] w-full">
+        <div class="bg-white w-full max-w-[calc(100vw-2rem)] sm:max-w-2xl rounded-3xl p-5 sm:p-6 shadow-2xl border border-crust-200 max-h-[90vh] overflow-y-auto my-auto mx-auto">
             <div class="flex items-center justify-between pb-3 border-b border-crust-200 mb-4">
                 <h3 id="productModalTitle" class="font-serif text-lg font-bold text-crust-900">Tambah Produk Sourdough</h3>
                 <button onclick="closeProductModal()" class="w-8 h-8 rounded-full hover:bg-crust-100 flex items-center justify-center text-crust-600">
@@ -876,8 +882,8 @@
     </div>
 
     <!-- MODAL: MASTER USER ADMIN -->
-    <div id="userModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto min-h-[100dvh]">
-        <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl border border-crust-200 my-auto mx-auto">
+    <div id="userModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 overflow-y-auto overflow-x-hidden min-h-[100dvh] w-full">
+        <div class="bg-white w-full max-w-[calc(100vw-2rem)] sm:max-w-sm rounded-3xl p-5 sm:p-6 shadow-2xl border border-crust-200 my-auto mx-auto overflow-hidden">
             <h3 id="userModalTitle" class="font-serif text-lg font-bold text-crust-900 mb-4">Tambah User Admin</h3>
             <form onsubmit="handleUserFormSubmit(event)" class="space-y-3 text-xs">
                 <input type="hidden" id="editUserId">
@@ -902,8 +908,8 @@
     </div>
 
     <!-- MODAL: KONEKSI SUPABASE -->
-    <div id="supabaseConfigModal" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto min-h-[100dvh]">
-        <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl border border-crust-200 my-auto mx-auto">
+    <div id="supabaseConfigModal" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 overflow-y-auto overflow-x-hidden min-h-[100dvh] w-full">
+        <div class="bg-white w-full max-w-[calc(100vw-2rem)] sm:max-w-md rounded-3xl p-5 sm:p-6 shadow-2xl border border-crust-200 my-auto mx-auto overflow-hidden">
             <h3 class="font-serif text-lg font-bold text-crust-900 mb-2">Pengaturan Database Supabase</h3>
             <p class="text-xs text-crust-600 mb-4">Masukkan URL dan Anon Public Key dari Dashboard Supabase Anda (Project Settings > API).</p>
 
@@ -925,8 +931,8 @@
     </div>
 
     <!-- CUSTOM CONFIRMATION MODAL (z-[70] - CENTERED) -->
-    <div id="customConfirmModal" class="fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto min-h-[100dvh]">
-        <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl border border-crust-200 text-center my-auto mx-auto">
+    <div id="customConfirmModal" class="fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 overflow-y-auto overflow-x-hidden min-h-[100dvh] w-full">
+        <div class="bg-white w-full max-w-[calc(100vw-2rem)] sm:max-w-sm rounded-3xl p-5 sm:p-6 shadow-2xl border border-crust-200 text-center my-auto mx-auto overflow-hidden">
             <div class="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-3 text-xl">
                 <i class="fa-solid fa-triangle-exclamation"></i>
             </div>
@@ -1095,6 +1101,7 @@
                     navBtnOrder.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition text-crust-800 hover:bg-white/60";
                     navBtnDashboard.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm bg-crust-700 text-white";
                 }
+                updateCustomerUI();
                 renderAdminDashboardState();
             } else if (hash.startsWith('#product/')) {
                 dashboardView.classList.add('hidden');
@@ -1106,7 +1113,7 @@
                     navBtnOrder.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm bg-crust-700 text-white";
                     navBtnDashboard.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition text-crust-800 hover:bg-white/60";
                 }
-
+                updateCustomerUI();
                 const productId = window.location.hash.replace('#product/', '').trim();
                 renderProductDetailPage(productId);
             } else {
@@ -1119,6 +1126,7 @@
                     navBtnOrder.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm bg-crust-700 text-white";
                     navBtnDashboard.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition text-crust-800 hover:bg-white/60";
                 }
+                updateCustomerUI();
             }
         }
 
@@ -1144,29 +1152,42 @@
             if (saved) {
                 try {
                     currentCustomer = JSON.parse(saved);
-                    updateCustomerUI();
                 } catch (e) {
                     currentCustomer = null;
                 }
-            } else {
-                updateCustomerUI();
             }
+            updateCustomerUI();
         }
 
         function updateCustomerUI() {
+            const isDashboard = window.location.hash.toLowerCase() === '#dashboard';
             const bar = document.getElementById('customerLoginBar');
             const badge = document.getElementById('customerInfoBadge');
             const badgeName = document.getElementById('customerNameBadge');
 
+            // Jika sedang berada di halaman #dashboard, sembunyikan total bilah login & badge info pemesan
+            if (isDashboard) {
+                if (bar) bar.classList.add('hidden');
+                if (badge) {
+                    badge.classList.add('hidden');
+                    badge.classList.remove('flex');
+                }
+                return;
+            }
+
             if (currentCustomer && currentCustomer.phone) {
-                bar.classList.add('hidden');
-                badge.classList.remove('hidden');
-                badge.classList.add('flex');
-                badgeName.textContent = currentCustomer.name || currentCustomer.phone;
+                if (bar) bar.classList.add('hidden');
+                if (badge) {
+                    badge.classList.remove('hidden');
+                    badge.classList.add('flex');
+                }
+                if (badgeName) badgeName.textContent = currentCustomer.name || currentCustomer.phone;
             } else {
-                bar.classList.remove('hidden');
-                badge.classList.add('hidden');
-                badge.classList.remove('flex');
+                if (bar) bar.classList.remove('hidden');
+                if (badge) {
+                    badge.classList.add('hidden');
+                    badge.classList.remove('flex');
+                }
             }
             updateCartDeliveryInfo();
         }
@@ -1458,21 +1479,21 @@
                                     <i class="fa-solid fa-triangle-exclamation"></i>
                                     <span>Alasan Penolakan / Pembatalan:</span>
                                 </div>
-                                <p class="leading-relaxed pl-5 font-medium">${order.cancel_reason}</p>
+                                <p class="leading-relaxed pl-5 font-medium break-words">${order.cancel_reason}</p>
                             </div>
                         ` : ''}
 
                         <div class="bg-crust-50/70 p-3 rounded-xl space-y-1 text-xs">
                             ${items.map(it => `
-                                <div class="flex justify-between items-center text-crust-800">
-                                    <span class="font-medium">${it.product_name} <span class="text-crust-500">(${it.variant_name})</span> <b class="font-mono">x${it.quantity}</b></span>
-                                    <span class="font-mono font-semibold">${formatRupiah(it.subtotal || (it.unit_price * it.quantity))}</span>
+                                <div class="flex justify-between items-center text-crust-800 gap-2">
+                                    <span class="font-medium break-words">${it.product_name} <span class="text-crust-500">(${it.variant_name})</span> <b class="font-mono">x${it.quantity}</b></span>
+                                    <span class="font-mono font-semibold flex-shrink-0">${formatRupiah(it.subtotal || (it.unit_price * it.quantity))}</span>
                                 </div>
                             `).join('')}
                         </div>
 
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between pt-1 gap-2 border-t border-crust-100/80">
-                            <div class="text-[11px] text-crust-600 line-clamp-1">
+                            <div class="text-[11px] text-crust-600 line-clamp-1 break-words">
                                 <i class="fa-solid fa-location-dot text-rose-500 mr-1"></i> ${order.customer_address || '-'}
                             </div>
                             <div class="text-right whitespace-nowrap">
@@ -1602,21 +1623,21 @@
                                 </span>
                             ` : ''}
                         </div>
-                        <div class="p-3 sm:p-4 flex flex-col flex-grow justify-between">
+                        <div class="p-2.5 sm:p-4 flex flex-col flex-grow justify-between">
                             <div>
-                                <h3 class="font-serif text-xs sm:text-base font-bold text-crust-900 leading-snug group-hover:text-crust-700 transition line-clamp-2">${prod.name}</h3>
+                                <h3 class="font-serif text-xs sm:text-base font-bold text-crust-900 leading-snug group-hover:text-crust-700 transition line-clamp-2 break-words">${prod.name}</h3>
                                 ${variantNamesList ? `
-                                    <p class="text-[10px] sm:text-xs text-crust-500 mt-1 font-medium line-clamp-1 sm:line-clamp-2">
+                                    <p class="text-[10px] sm:text-xs text-crust-500 mt-1 font-medium line-clamp-1 sm:line-clamp-2 break-words">
                                         ${variantNamesList}
                                     </p>
                                 ` : ''}
                             </div>
-                            <div class="mt-3 pt-2.5 border-t border-crust-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                            <div class="mt-2.5 sm:mt-3 pt-2 sm:pt-2.5 border-t border-crust-100 flex flex-col sm:flex-row sm:items-center justify-between gap-1.5 sm:gap-2">
                                 <div>
                                     <span class="text-[9px] sm:text-[11px] text-crust-500 block">Harga</span>
-                                    <span class="font-serif font-bold text-xs sm:text-sm text-crust-800 leading-tight">${priceLabel}</span>
+                                    <span class="font-serif font-bold text-[11px] sm:text-sm text-crust-800 leading-tight">${priceLabel}</span>
                                 </div>
-                                <button onclick="event.stopPropagation(); navigateToProduct('${prod.id}')" ${isOutOfStock ? 'disabled' : ''} class="w-full sm:w-auto bg-crust-700 hover:bg-crust-800 disabled:bg-crust-300 disabled:cursor-not-allowed text-white text-[10px] sm:text-xs font-bold px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl shadow transition flex items-center justify-center gap-1">
+                                <button onclick="event.stopPropagation(); navigateToProduct('${prod.id}')" ${isOutOfStock ? 'disabled' : ''} class="w-full sm:w-auto bg-crust-700 hover:bg-crust-800 disabled:bg-crust-300 disabled:cursor-not-allowed text-white text-[10px] sm:text-xs font-bold px-2 py-1.5 sm:px-3.5 sm:py-2 rounded-xl shadow transition flex items-center justify-center gap-1">
                                     <i class="fa-solid fa-cart-plus"></i> <span class="hidden sm:inline">Lihat Varian</span><span class="sm:hidden">Pilih</span>
                                 </button>
                             </div>
@@ -1822,12 +1843,12 @@
                 const varThumb = v.image_url ? formatGoogleDriveUrl(v.image_url) : '';
 
                 return `
-                    <div class="p-3.5 rounded-2xl border transition-all ${isSelected ? 'border-crust-700 bg-crust-50 ring-1 ring-crust-700/40 shadow-sm' : 'border-crust-200 bg-white hover:border-crust-300'} flex items-center justify-between gap-3">
-                        <div class="flex items-center gap-3 min-w-0 flex-grow cursor-pointer" onclick="switchSliderToPhotoUrl('${v.image_url}')">
+                    <div class="p-3 sm:p-3.5 rounded-2xl border transition-all ${isSelected ? 'border-crust-700 bg-crust-50 ring-1 ring-crust-700/40 shadow-sm' : 'border-crust-200 bg-white hover:border-crust-300'} flex items-center justify-between gap-2.5 sm:gap-3">
+                        <div class="flex items-center gap-2.5 sm:gap-3 min-w-0 flex-grow cursor-pointer" onclick="switchSliderToPhotoUrl('${v.image_url}')">
                             ${varThumb ? `
-                                <img src="${varThumb}" class="w-12 h-12 rounded-xl object-cover border border-crust-200 flex-shrink-0" title="Klik untuk lihat foto varian">
+                                <img src="${varThumb}" class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl object-cover border border-crust-200 flex-shrink-0" title="Klik untuk lihat foto varian">
                             ` : `
-                                <div class="w-12 h-12 rounded-xl bg-crust-100 flex items-center justify-center text-crust-500 text-xs flex-shrink-0">
+                                <div class="w-11 h-11 sm:w-12 sm:h-12 rounded-xl bg-crust-100 flex items-center justify-center text-crust-500 text-xs flex-shrink-0">
                                     <i class="fa-solid fa-bread-slice"></i>
                                 </div>
                             `}
@@ -1840,12 +1861,12 @@
                             </div>
                         </div>
 
-                        <div class="flex items-center gap-1.5 flex-shrink-0 ml-1">
-                            <button type="button" onclick="adjustVariantQty('${v.id}', -1)" ${qty <= 0 ? 'disabled' : ''} class="w-8 h-8 rounded-xl bg-crust-100 hover:bg-crust-200 disabled:opacity-30 text-crust-800 flex items-center justify-center font-bold text-sm transition">
+                        <div class="flex items-center gap-1 sm:gap-1.5 flex-shrink-0 ml-1">
+                            <button type="button" onclick="adjustVariantQty('${v.id}', -1)" ${qty <= 0 ? 'disabled' : ''} class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-crust-100 hover:bg-crust-200 disabled:opacity-30 text-crust-800 flex items-center justify-center font-bold text-xs sm:text-sm transition">
                                 -
                             </button>
-                            <span id="qtyBadge_${v.id}" class="font-bold text-xs sm:text-sm w-6 text-center text-crust-900">${qty}</span>
-                            <button type="button" onclick="adjustVariantQty('${v.id}', 1)" ${isOutOfStock ? 'disabled' : ''} class="w-8 h-8 rounded-xl bg-crust-700 hover:bg-crust-800 disabled:bg-crust-300 text-white flex items-center justify-center font-bold text-sm transition shadow-sm">
+                            <span id="qtyBadge_${v.id}" class="font-bold text-xs sm:text-sm w-5 sm:w-6 text-center text-crust-900">${qty}</span>
+                            <button type="button" onclick="adjustVariantQty('${v.id}', 1)" ${isOutOfStock ? 'disabled' : ''} class="w-7 h-7 sm:w-8 sm:h-8 rounded-xl bg-crust-700 hover:bg-crust-800 disabled:bg-crust-300 text-white flex items-center justify-center font-bold text-xs sm:text-sm transition shadow-sm">
                                 +
                             </button>
                         </div>
@@ -2036,16 +2057,16 @@
                 totalPrice += subtotal;
 
                 return `
-                    <div class="flex items-center justify-between p-3 rounded-2xl bg-crust-50 border border-crust-200">
-                        <div class="flex items-center gap-3">
-                            <img src="${formatGoogleDriveUrl(item.imageUrl)}" class="w-12 h-12 rounded-xl object-cover border border-crust-200">
-                            <div>
-                                <h4 class="font-bold text-xs text-crust-900">${item.productName}</h4>
-                                <span class="text-[11px] text-crust-600 font-medium block">${item.variantName} - ${formatRupiah(item.price)}</span>
+                    <div class="flex items-center justify-between p-3 rounded-2xl bg-crust-50 border border-crust-200 gap-2">
+                        <div class="flex items-center gap-2.5 sm:gap-3 min-w-0">
+                            <img src="${formatGoogleDriveUrl(item.imageUrl)}" class="w-12 h-12 rounded-xl object-cover border border-crust-200 flex-shrink-0">
+                            <div class="min-w-0">
+                                <h4 class="font-bold text-xs text-crust-900 break-words leading-tight">${item.productName}</h4>
+                                <span class="text-[11px] text-crust-600 font-medium block truncate">${item.variantName} - ${formatRupiah(item.price)}</span>
                                 <span class="text-[11px] font-bold text-crust-800">Subtotal: ${formatRupiah(subtotal)}</span>
                             </div>
                         </div>
-                        <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-1.5 sm:gap-2 flex-shrink-0">
                             <button onclick="changeCartQty(${idx}, -1)" class="w-6 h-6 rounded-md bg-white border border-crust-300 flex items-center justify-center text-xs font-bold">-</button>
                             <span class="text-xs font-bold w-4 text-center">${item.qty}</span>
                             <button onclick="changeCartQty(${idx}, 1)" class="w-6 h-6 rounded-md bg-white border border-crust-300 flex items-center justify-center text-xs font-bold">+</button>
@@ -2479,11 +2500,11 @@
                 else statusBadge = '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-200">Dibatalkan / Ditolak</span>';
 
                 return `
-                    <div class="bg-white p-5 rounded-2xl border ${o.status === 'dibatalkan' ? 'border-rose-200 bg-rose-50/10' : 'border-crust-200'} shadow-sm space-y-3">
+                    <div class="bg-white p-4 sm:p-5 rounded-2xl border ${o.status === 'dibatalkan' ? 'border-rose-200 bg-rose-50/10' : 'border-crust-200'} shadow-sm space-y-3">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-crust-100 gap-2">
                             <div>
                                 <div class="flex items-center gap-2">
-                                    <h4 class="font-bold text-sm text-crust-900">${o.customer_name}</h4>
+                                    <h4 class="font-bold text-sm text-crust-900 break-words">${o.customer_name}</h4>
                                     <span class="font-mono text-xs text-crust-500">#${o.id}</span>
                                     ${statusBadge}
                                 </div>
@@ -2495,13 +2516,13 @@
                                     <span>${o.created_at ? new Date(o.created_at).toLocaleString('id-ID') : '-'}</span>
                                 </div>
                                 ${o.customer_address ? `
-                                    <p class="text-xs text-crust-700 mt-1 bg-crust-50 p-2 rounded-lg border border-crust-200/60 leading-relaxed">
+                                    <p class="text-xs text-crust-700 mt-1 bg-crust-50 p-2 rounded-lg border border-crust-200/60 leading-relaxed break-words">
                                         <i class="fa-solid fa-location-dot text-rose-500 mr-1"></i> <strong>Alamat:</strong> ${o.customer_address}
                                     </p>
                                 ` : ''}
 
                                 ${o.status === 'dibatalkan' && o.cancel_reason ? `
-                                    <p class="text-xs text-rose-800 mt-1.5 bg-rose-50 p-2 rounded-lg border border-rose-200 leading-relaxed">
+                                    <p class="text-xs text-rose-800 mt-1.5 bg-rose-50 p-2 rounded-lg border border-rose-200 leading-relaxed break-words">
                                         <i class="fa-solid fa-ban text-rose-600 mr-1"></i> <strong>Alasan Penolakan:</strong> ${o.cancel_reason}
                                     </p>
                                 ` : ''}
@@ -2526,13 +2547,13 @@
 
                         <div class="bg-crust-50 p-3 rounded-xl space-y-1.5 text-xs">
                             ${items.map(i => `
-                                <div class="flex justify-between items-center text-crust-800">
-                                    <div>
-                                        <span class="font-semibold">${i.product_name}</span> 
+                                <div class="flex justify-between items-center text-crust-800 gap-2">
+                                    <div class="min-w-0">
+                                        <span class="font-semibold break-words">${i.product_name}</span> 
                                         <span class="text-crust-500">(${i.variant_name})</span>
                                         <span class="text-crust-600 font-mono">x${i.quantity} @${formatRupiah(i.unit_price)}</span>
                                     </div>
-                                    <span class="font-bold">${formatRupiah(i.subtotal || (i.unit_price * i.quantity))}</span>
+                                    <span class="font-bold flex-shrink-0">${formatRupiah(i.subtotal || (i.unit_price * i.quantity))}</span>
                                 </div>
                             `).join('')}
                         </div>
@@ -2712,7 +2733,7 @@
                                 <i class="fa-brands fa-whatsapp text-sm text-emerald-600"></i> ${c.phone}
                             </a>
                         </td>
-                        <td class="p-3 font-bold text-crust-900">${c.name || '<span class="text-crust-400 font-normal">Belum diisi</span>'}</td>
+                        <td class="p-3 font-bold text-crust-900 break-words">${c.name || '<span class="text-crust-400 font-normal">Belum diisi</span>'}</td>
                         <td class="p-3 text-crust-700 max-w-xs break-words leading-relaxed">${c.address || '<span class="text-crust-400">Belum diisi</span>'}</td>
                         <td class="p-3">
                             <span class="font-bold text-crust-900 block">${orderCount} pesanan</span>
@@ -2765,14 +2786,14 @@
                             <img src="${formatGoogleDriveUrl(firstImg)}" class="w-10 h-10 rounded-lg object-cover border border-crust-200">
                         </td>
                         <td class="p-3">
-                            <p class="font-bold text-crust-900">${p.name}</p>
+                            <p class="font-bold text-crust-900 break-words">${p.name}</p>
                             ${p.bake_date ? `<span class="text-[10px] text-crust-500 block">Bake: ${p.bake_date}</span>` : ''}
                         </td>
                         <td class="p-3">
                             <div class="space-y-1">
                                 ${variants.map(v => `
                                     <div class="flex items-center gap-2">
-                                        <span class="bg-crust-100 text-crust-800 px-1.5 py-0.5 rounded text-[10px] font-medium">${v.variant_name}</span>
+                                        <span class="bg-crust-100 text-crust-800 px-1.5 py-0.5 rounded text-[10px] font-medium break-words">${v.variant_name}</span>
                                         <span class="font-mono text-crust-700">${formatRupiah(v.price)}</span>
                                         ${p.stock_mode === 'per_variant' ? `<span class="text-[10px] text-crust-500">(${v.stock} pcs)</span>` : ''}
                                     </div>
@@ -3490,7 +3511,7 @@
             tbody.innerHTML = adminUsersList.map(u => `
                 <tr class="hover:bg-crust-50">
                     <td class="p-3 font-bold text-crust-900">${u.username}</td>
-                    <td class="p-3 text-crust-700">${u.full_name || '-'}</td>
+                    <td class="p-3 text-crust-700 break-words">${u.full_name || '-'}</td>
                     <td class="p-3"><span class="bg-crust-100 text-crust-800 px-2 py-0.5 rounded text-[10px] uppercase font-bold">${u.role || 'admin'}</span></td>
                     <td class="p-3 text-right">
                         <button onclick="editAdminUser('${u.id}')" class="p-1.5 text-crust-700 hover:bg-crust-100 rounded" title="Edit"><i class="fa-solid fa-pen"></i></button>
