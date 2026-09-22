@@ -92,17 +92,23 @@
                 </div>
             </a>
 
-            <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2 sm:gap-3">
                 <!-- Customer info badge saat sudah login (Bisa diklik untuk perbarui nama & alamat) -->
                 <div id="customerInfoBadge" class="hidden items-center gap-2 bg-crust-100 text-crust-900 px-3 py-1.5 rounded-full border border-crust-300 text-xs sm:text-sm font-medium">
                     <button onclick="openCustomerProfileModal()" class="flex items-center gap-1.5 hover:text-crust-700 text-left" title="Klik untuk edit profil & alamat">
                         <i class="fa-solid fa-user-check text-emerald-600"></i>
-                        <span id="customerNameBadge" class="truncate max-w-[100px] sm:max-w-[150px]">Pelanggan</span>
+                        <span id="customerNameBadge" class="truncate max-w-[90px] sm:max-w-[140px]">Pelanggan</span>
                     </button>
                     <button onclick="logoutCustomer()" title="Ganti Nomor / Keluar" class="text-crust-500 hover:text-red-600 ml-1">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
                     </button>
                 </div>
+
+                <!-- Tombol Riwayat & Status Pesanan Pelanggan -->
+                <button id="customerHistoryBtn" onclick="openCustomerOrdersHistoryModal()" class="bg-white hover:bg-crust-100 text-crust-800 border border-crust-300 px-2.5 sm:px-3.5 py-2 rounded-xl transition shadow-xs flex items-center gap-1.5 text-xs font-semibold" title="Lihat Status & Riwayat Pesanan">
+                    <i class="fa-solid fa-receipt text-crust-600"></i>
+                    <span class="hidden sm:inline">Pesanan Saya</span>
+                </button>
 
                 <!-- Floating Cart Toggle Button -->
                 <button id="cartBtn" onclick="toggleCartModal(true)" class="relative bg-crust-700 hover:bg-crust-800 text-white px-3 sm:px-4 py-2 rounded-xl transition shadow flex items-center gap-2 text-sm font-semibold">
@@ -111,7 +117,7 @@
                     <span id="cartCount" class="bg-accent text-white text-[11px] font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">0</span>
                 </button>
 
-                <!-- Shortcut ke dashboard (Disembunyikan) -->
+                <!-- Shortcut ke dashboard (Disembunyikan sesuai permintaan) -->
                 <a href="#dashboard" onclick="navigateTo('dashboard')" class="hidden text-xs text-crust-600 hover:text-crust-900 p-2 rounded-lg hover:bg-crust-100 transition" title="Menu Pengelola Dashboard">
                     <i class="fa-solid fa-sliders text-base"></i>
                 </a>
@@ -422,7 +428,7 @@
                             <option value="baru">Pesanan Masuk (Baru)</option>
                             <option value="diproses">Sedang Diproses</option>
                             <option value="selesai">Selesai</option>
-                            <option value="dibatalkan">Dibatalkan</option>
+                            <option value="dibatalkan">Dibatalkan / Ditolak</option>
                         </select>
                         <button onclick="fetchOrders()" class="text-xs bg-crust-100 hover:bg-crust-200 text-crust-800 p-2 rounded-xl transition" title="Refresh Pesanan">
                             <i class="fa-solid fa-rotate"></i>
@@ -609,6 +615,90 @@
                     <i class="fa-solid fa-check"></i> Order Sekarang
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- MODAL: STATUS & RIWAYAT PESANAN PELANGGAN (z-[60]) -->
+    <div id="customerOrdersHistoryModal" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-3 sm:p-4 overflow-y-auto min-h-[100dvh]">
+        <div class="bg-white w-full max-w-2xl rounded-3xl p-5 sm:p-6 shadow-2xl border border-crust-200 max-h-[90vh] flex flex-col my-auto mx-auto">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between pb-3 border-b border-crust-200 mb-4 flex-shrink-0">
+                <div class="flex items-center gap-2.5">
+                    <div class="w-10 h-10 rounded-2xl bg-crust-100 text-crust-800 flex items-center justify-center text-lg">
+                        <i class="fa-solid fa-receipt"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-serif text-lg font-bold text-crust-900">Status & Riwayat Pesanan</h3>
+                        <p id="historyCustomerPhoneBadge" class="text-xs text-crust-600">Memeriksa pesanan...</p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <button onclick="fetchCustomerOrdersHistory()" class="text-xs bg-crust-100 hover:bg-crust-200 text-crust-800 p-2 rounded-xl transition" title="Muat Ulang Riwayat">
+                        <i class="fa-solid fa-rotate"></i>
+                    </button>
+                    <button onclick="closeCustomerOrdersHistoryModal()" class="w-8 h-8 rounded-full hover:bg-crust-100 flex items-center justify-center text-crust-600">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- List Pesanan Pelanggan -->
+            <div id="customerOrdersHistoryList" class="flex-grow overflow-y-auto space-y-3.5 pr-1 text-xs">
+                <!-- Injected via JS -->
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="pt-3 border-t border-crust-100 mt-4 flex items-center justify-between flex-shrink-0 text-xs">
+                <span class="text-crust-500">Ada pertanyaan seputar pesanan?</span>
+                <a href="https://wa.me/6287724425959?text=Halo%20Admin%20PO%20PRODUK%20XOUR,%20saya%20ingin%20bertanya%20status%20pesanan%20saya." target="_blank" class="text-emerald-700 hover:text-emerald-800 font-bold flex items-center gap-1.5 bg-emerald-50 px-3 py-1.5 rounded-xl border border-emerald-200">
+                    <i class="fa-brands fa-whatsapp text-sm"></i> Chat WhatsApp Admin
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: TOLAK / BATALKAN PESANAN (ADMIN) (z-[65]) -->
+    <div id="adminRejectOrderModal" class="fixed inset-0 z-[65] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto min-h-[100dvh]">
+        <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl border border-crust-200 my-auto mx-auto">
+            <div class="flex items-center gap-3 pb-3 border-b border-crust-200 mb-4">
+                <div class="w-10 h-10 rounded-2xl bg-rose-100 text-rose-600 flex items-center justify-center text-lg">
+                    <i class="fa-solid fa-ban"></i>
+                </div>
+                <div>
+                    <h3 class="font-serif text-lg font-bold text-crust-900">Tolak / Batalkan Pesanan</h3>
+                    <p id="rejectOrderNumberLabel" class="text-xs text-crust-600 font-mono">Order #ORD-XXXXXX</p>
+                </div>
+            </div>
+
+            <form onsubmit="handleRejectOrderSubmit(event)" class="space-y-4 text-xs">
+                <input type="hidden" id="rejectOrderId">
+                
+                <div>
+                    <label class="block font-bold text-crust-800 mb-1.5">Pilih Alasan Cepat:</label>
+                    <div class="grid grid-cols-1 gap-1.5">
+                        <button type="button" onclick="setQuickRejectReason('Slot kuota baking sourdough batch ini sudah penuh')" class="text-left px-3 py-2 rounded-xl border border-crust-200 hover:border-crust-400 bg-crust-50 hover:bg-crust-100 text-crust-800 transition">
+                            🥖 Slot baking sourdough batch ini sudah penuh
+                        </button>
+                        <button type="button" onclick="setQuickRejectReason('Stok bahan baku artisanal habis / varian tidak tersedia')" class="text-left px-3 py-2 rounded-xl border border-crust-200 hover:border-crust-400 bg-crust-50 hover:bg-crust-100 text-crust-800 transition">
+                            🌾 Stok bahan baku artisanal habis / varian kosong
+                        </button>
+                        <button type="button" onclick="setQuickRejectReason('Lokasi pengantaran berada di luar jangkauan kurir')" class="text-left px-3 py-2 rounded-xl border border-crust-200 hover:border-crust-400 bg-crust-50 hover:bg-crust-100 text-crust-800 transition">
+                            📍 Lokasi pengantaran di luar jangkauan kurir
+                        </button>
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-crust-800 mb-1">Alasan Penolakan / Pembatalan Lengkap *</label>
+                    <textarea id="rejectReasonInput" required rows="3" placeholder="Tuliskan alasan penolakan secara jelas untuk diinfokan ke pelanggan..." class="w-full p-2.5 rounded-xl border border-crust-200 bg-crust-50 focus:ring-2 focus:ring-rose-500 focus:outline-none"></textarea>
+                    <p class="text-[10px] text-crust-500 mt-1">Alasan ini akan tampil pada riwayat pesanan pelanggan dan stok pesanan otomatis dikembalikan.</p>
+                </div>
+
+                <div class="flex justify-end gap-2 pt-2 border-t border-crust-100">
+                    <button type="button" onclick="closeAdminRejectOrderModal()" class="px-4 py-2 rounded-xl border border-crust-300 text-crust-700 font-semibold hover:bg-crust-50">Tutup</button>
+                    <button type="submit" id="btnConfirmReject" class="px-5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold transition shadow">Konfirmasi Tolak Pesanan</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -871,6 +961,7 @@
         let filteredProducts = [];
         let allOrders = [];
         let allCustomers = [];
+        let customerOrdersHistory = [];
         let cart = [];
         let selectedProductIds = new Set();
         let currentModalProduct = null;
@@ -990,6 +1081,7 @@
             const dashboardView = document.getElementById('dashboardView');
             const productDetailView = document.getElementById('productDetailView');
             const cartBtn = document.getElementById('cartBtn');
+            const historyBtn = document.getElementById('customerHistoryBtn');
             const navBtnOrder = document.getElementById('navBtnOrder');
             const navBtnDashboard = document.getElementById('navBtnDashboard');
 
@@ -998,6 +1090,7 @@
                 productDetailView.classList.add('hidden');
                 dashboardView.classList.remove('hidden');
                 cartBtn.classList.add('hidden');
+                if (historyBtn) historyBtn.classList.add('hidden');
                 if (navBtnOrder && navBtnDashboard) {
                     navBtnOrder.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition text-crust-800 hover:bg-white/60";
                     navBtnDashboard.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm bg-crust-700 text-white";
@@ -1008,6 +1101,7 @@
                 orderView.classList.add('hidden');
                 productDetailView.classList.remove('hidden');
                 cartBtn.classList.remove('hidden');
+                if (historyBtn) historyBtn.classList.remove('hidden');
                 if (navBtnOrder && navBtnDashboard) {
                     navBtnOrder.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm bg-crust-700 text-white";
                     navBtnDashboard.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition text-crust-800 hover:bg-white/60";
@@ -1020,6 +1114,7 @@
                 productDetailView.classList.add('hidden');
                 orderView.classList.remove('hidden');
                 cartBtn.classList.remove('hidden');
+                if (historyBtn) historyBtn.classList.remove('hidden');
                 if (navBtnOrder && navBtnDashboard) {
                     navBtnOrder.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm bg-crust-700 text-white";
                     navBtnDashboard.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition text-crust-800 hover:bg-white/60";
@@ -1246,6 +1341,148 @@
                 updateCustomerUI();
                 showToast("Berhasil Keluar", "Data pemesan telah dihapus dari browser.");
             });
+        }
+
+        // ================= FITUR STATUS & RIWAYAT PESANAN PELANGGAN =================
+        function openCustomerOrdersHistoryModal() {
+            if (!currentCustomer || !currentCustomer.phone) {
+                openCustomerAuthModal();
+                showToast("Masuk Terlebih Dahulu", "Silakan masukkan nomor WhatsApp Anda untuk melihat riwayat pesanan.", true);
+                return;
+            }
+
+            const modal = document.getElementById('customerOrdersHistoryModal');
+            const phoneBadge = document.getElementById('historyCustomerPhoneBadge');
+            phoneBadge.textContent = `Riwayat pesanan nomor: ${currentCustomer.phone}`;
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+
+            fetchCustomerOrdersHistory();
+        }
+
+        function closeCustomerOrdersHistoryModal() {
+            const modal = document.getElementById('customerOrdersHistoryModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        async function fetchCustomerOrdersHistory() {
+            if (!currentCustomer || !currentCustomer.phone) return;
+            const container = document.getElementById('customerOrdersHistoryList');
+            container.innerHTML = `
+                <div class="text-center py-10">
+                    <i class="fa-solid fa-circle-notch fa-spin text-2xl text-crust-600 mb-2"></i>
+                    <p class="text-xs text-crust-600">Memuat riwayat pesanan Anda...</p>
+                </div>
+            `;
+
+            try {
+                if (supabaseClient) {
+                    const { data, error } = await supabaseClient
+                        .from('orders')
+                        .select('*, items:order_items(*)')
+                        .eq('customer_phone', currentCustomer.phone)
+                        .order('created_at', { ascending: false });
+
+                    if (error) throw error;
+                    customerOrdersHistory = data || [];
+                } else {
+                    customerOrdersHistory = allOrders.filter(o => o.customer_phone === currentCustomer.phone);
+                }
+
+                renderCustomerOrdersHistoryUI();
+            } catch (err) {
+                console.error("Gagal mengambil riwayat:", err);
+                container.innerHTML = `
+                    <div class="text-center py-8 text-rose-600">
+                        <i class="fa-solid fa-circle-exclamation text-2xl mb-1"></i>
+                        <p class="text-xs">Gagal mengambil data pesanan. Silakan coba kembali.</p>
+                    </div>
+                `;
+            }
+        }
+
+        function renderCustomerOrdersHistoryUI() {
+            const container = document.getElementById('customerOrdersHistoryList');
+
+            if (customerOrdersHistory.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-12 bg-crust-50 rounded-2xl border border-dashed border-crust-300 p-6">
+                        <i class="fa-solid fa-bread-slice text-3xl text-crust-300 mb-2"></i>
+                        <h4 class="font-serif font-bold text-crust-800 text-sm">Belum Ada Riwayat Pesanan</h4>
+                        <p class="text-xs text-crust-500 mt-1">Anda belum membuat pesanan sourdough dengan nomor WhatsApp ini.</p>
+                        <button onclick="closeCustomerOrdersHistoryModal()" class="mt-4 bg-crust-700 text-white text-xs font-bold px-4 py-2 rounded-xl">
+                            Pesan Sourdough Sekarang
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = customerOrdersHistory.map(order => {
+                const items = order.items || [];
+                let statusBadge = '';
+                let statusIcon = '';
+
+                if (order.status === 'baru') {
+                    statusBadge = '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">Pesanan Diterima (Menunggu Konfirmasi)</span>';
+                    statusIcon = '<i class="fa-solid fa-clock text-amber-600"></i>';
+                } else if (order.status === 'diproses') {
+                    statusBadge = '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">Sedang Diproses / Baking</span>';
+                    statusIcon = '<i class="fa-solid fa-fire text-blue-600"></i>';
+                } else if (order.status === 'selesai') {
+                    statusBadge = '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">Pesanan Selesai / Dikirim</span>';
+                    statusIcon = '<i class="fa-solid fa-circle-check text-emerald-600"></i>';
+                } else if (order.status === 'dibatalkan') {
+                    statusBadge = '<span class="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-200">Pesanan Dibatalkan / Ditolak</span>';
+                    statusIcon = '<i class="fa-solid fa-ban text-rose-600"></i>';
+                }
+
+                return `
+                    <div class="bg-white p-4 rounded-2xl border ${order.status === 'dibatalkan' ? 'border-rose-300/80 bg-rose-50/20' : 'border-crust-200'} shadow-xs space-y-2.5">
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-crust-100 gap-1.5">
+                            <div class="flex items-center gap-2">
+                                <span class="text-sm">${statusIcon}</span>
+                                <span class="font-mono font-bold text-xs text-crust-900">#${order.id}</span>
+                                ${statusBadge}
+                            </div>
+                            <span class="text-[11px] text-crust-500">
+                                ${order.created_at ? new Date(order.created_at).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }) : '-'}
+                            </span>
+                        </div>
+
+                        ${order.status === 'dibatalkan' && order.cancel_reason ? `
+                            <div class="bg-rose-50 p-3 rounded-xl border border-rose-200/80 text-rose-900 text-xs">
+                                <div class="font-bold flex items-center gap-1.5 mb-0.5 text-rose-800">
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                    <span>Alasan Penolakan / Pembatalan:</span>
+                                </div>
+                                <p class="leading-relaxed pl-5 font-medium">${order.cancel_reason}</p>
+                            </div>
+                        ` : ''}
+
+                        <div class="bg-crust-50/70 p-3 rounded-xl space-y-1 text-xs">
+                            ${items.map(it => `
+                                <div class="flex justify-between items-center text-crust-800">
+                                    <span class="font-medium">${it.product_name} <span class="text-crust-500">(${it.variant_name})</span> <b class="font-mono">x${it.quantity}</b></span>
+                                    <span class="font-mono font-semibold">${formatRupiah(it.subtotal || (it.unit_price * it.quantity))}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between pt-1 gap-2 border-t border-crust-100/80">
+                            <div class="text-[11px] text-crust-600 line-clamp-1">
+                                <i class="fa-solid fa-location-dot text-rose-500 mr-1"></i> ${order.customer_address || '-'}
+                            </div>
+                            <div class="text-right whitespace-nowrap">
+                                <span class="text-[11px] text-crust-500 mr-1">Total:</span>
+                                <span class="font-serif font-bold text-sm text-crust-900">${formatRupiah(order.total_amount)}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
         }
 
         // ================= KATALOG PRODUK (2 PRODUK KIRI-KANAN) =================
@@ -1872,6 +2109,7 @@
                 total_amount: totalAmount,
                 total_qty: totalQty,
                 status: 'baru',
+                cancel_reason: null,
                 created_at: new Date().toISOString()
             };
 
@@ -1944,7 +2182,7 @@
                 await loadProducts();
                 showToast("Order Berhasil Dibuat!", "Pesanan telah tersimpan di sistem.");
 
-                // Nomor WhatsApp Admin yang telah diperbarui: +6287724425959
+                // Buka WhatsApp Admin
                 const encodedMsg = encodeURIComponent(waMessage);
                 window.open(`https://wa.me/6287724425959?text=${encodedMsg}`, '_blank');
 
@@ -2114,7 +2352,9 @@
             }
 
             const totalOrders = filtered.length;
-            const totalRevenue = filtered.reduce((sum, o) => sum + Number(o.total_amount || 0), 0);
+            const totalRevenue = filtered
+                .filter(o => o.status !== 'dibatalkan')
+                .reduce((sum, o) => sum + Number(o.total_amount || 0), 0);
             const processing = filtered.filter(o => o.status === 'diproses').length;
             const completed = filtered.filter(o => o.status === 'selesai').length;
 
@@ -2133,7 +2373,9 @@
                 if (!dateMap[d]) {
                     dateMap[d] = { revenue: 0, count: 0 };
                 }
-                dateMap[d].revenue += Number(o.total_amount || 0);
+                if (o.status !== 'dibatalkan') {
+                    dateMap[d].revenue += Number(o.total_amount || 0);
+                }
                 dateMap[d].count += 1;
             });
 
@@ -2205,7 +2447,8 @@
                 list = list.filter(o => 
                     (o.customer_name && o.customer_name.toLowerCase().includes(search)) ||
                     (o.customer_phone && o.customer_phone.includes(search)) ||
-                    (o.customer_address && o.customer_address.toLowerCase().includes(search))
+                    (o.customer_address && o.customer_address.toLowerCase().includes(search)) ||
+                    (o.id && String(o.id).toLowerCase().includes(search))
                 );
             }
 
@@ -2233,14 +2476,15 @@
                 if (o.status === 'baru') statusBadge = '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amber-100 text-amber-800 border border-amber-200">Pesanan Baru</span>';
                 else if (o.status === 'diproses') statusBadge = '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200">Sedang Diproses</span>';
                 else if (o.status === 'selesai') statusBadge = '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-100 text-emerald-800 border border-emerald-200">Pesanan Selesai</span>';
-                else statusBadge = '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-gray-100 text-gray-800">Dibatalkan</span>';
+                else statusBadge = '<span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-rose-100 text-rose-800 border border-rose-200">Dibatalkan / Ditolak</span>';
 
                 return `
-                    <div class="bg-white p-5 rounded-2xl border border-crust-200 shadow-sm space-y-3">
+                    <div class="bg-white p-5 rounded-2xl border ${o.status === 'dibatalkan' ? 'border-rose-200 bg-rose-50/10' : 'border-crust-200'} shadow-sm space-y-3">
                         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-crust-100 gap-2">
                             <div>
                                 <div class="flex items-center gap-2">
                                     <h4 class="font-bold text-sm text-crust-900">${o.customer_name}</h4>
+                                    <span class="font-mono text-xs text-crust-500">#${o.id}</span>
                                     ${statusBadge}
                                 </div>
                                 <div class="flex items-center gap-3 text-xs text-crust-500 mt-1">
@@ -2255,14 +2499,28 @@
                                         <i class="fa-solid fa-location-dot text-rose-500 mr-1"></i> <strong>Alamat:</strong> ${o.customer_address}
                                     </p>
                                 ` : ''}
+
+                                ${o.status === 'dibatalkan' && o.cancel_reason ? `
+                                    <p class="text-xs text-rose-800 mt-1.5 bg-rose-50 p-2 rounded-lg border border-rose-200 leading-relaxed">
+                                        <i class="fa-solid fa-ban text-rose-600 mr-1"></i> <strong>Alasan Penolakan:</strong> ${o.cancel_reason}
+                                    </p>
+                                ` : ''}
                             </div>
-                            <div class="flex items-center gap-2">
-                                <button onclick="updateOrderStatus('${o.id}', 'diproses')" class="bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 text-xs font-semibold px-3 py-1.5 rounded-xl transition">
-                                    <i class="fa-solid fa-fire mr-1"></i> Proses Orderan
-                                </button>
-                                <button onclick="updateOrderStatus('${o.id}', 'selesai')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-semibold px-3 py-1.5 rounded-xl transition">
-                                    <i class="fa-solid fa-check-double mr-1"></i> Pesanan Selesai
-                                </button>
+
+                            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                                ${o.status !== 'selesai' && o.status !== 'dibatalkan' ? `
+                                    <button onclick="updateOrderStatus('${o.id}', 'diproses')" class="bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 text-xs font-semibold px-3 py-1.5 rounded-xl transition">
+                                        <i class="fa-solid fa-fire mr-1"></i> Proses
+                                    </button>
+                                    <button onclick="updateOrderStatus('${o.id}', 'selesai')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 text-xs font-semibold px-3 py-1.5 rounded-xl transition">
+                                        <i class="fa-solid fa-check-double mr-1"></i> Selesai
+                                    </button>
+                                    <button onclick="openRejectOrderModal('${o.id}')" class="bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-300 text-xs font-semibold px-3 py-1.5 rounded-xl transition">
+                                        <i class="fa-solid fa-ban mr-1"></i> Tolak / Batalkan
+                                    </button>
+                                ` : `
+                                    <span class="text-xs text-crust-400 italic">Pesanan telah ditutup (${o.status})</span>
+                                `}
                             </div>
                         </div>
 
@@ -2308,6 +2566,83 @@
 
             fetchOrders();
             showToast("Status Diperbarui", `Pesanan telah ditandai '${newStatus}'.`);
+        }
+
+        // ================= FITUR TOLAK / BATALKAN PESANAN DENGAN ALASAN =================
+        function openRejectOrderModal(orderId) {
+            const modal = document.getElementById('adminRejectOrderModal');
+            document.getElementById('rejectOrderId').value = orderId;
+            document.getElementById('rejectOrderNumberLabel').textContent = `Order #${orderId}`;
+            document.getElementById('rejectReasonInput').value = '';
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeAdminRejectOrderModal() {
+            const modal = document.getElementById('adminRejectOrderModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        function setQuickRejectReason(reason) {
+            const input = document.getElementById('rejectReasonInput');
+            input.value = reason;
+            autoResizeTextarea(input);
+        }
+
+        async function handleRejectOrderSubmit(e) {
+            e.preventDefault();
+            const orderId = document.getElementById('rejectOrderId').value;
+            const reason = document.getElementById('rejectReasonInput').value.trim();
+
+            if (!reason) {
+                showToast("Alasan Wajib Diisi", "Mohon berikan alasan penolakan atau pembatalan pesanan.", true);
+                return;
+            }
+
+            const btn = document.getElementById('btnConfirmReject');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Menyimpan...`;
+
+            try {
+                if (supabaseClient) {
+                    // Update status pesanan dan simpan alasan pembatalan
+                    const { error: updErr } = await supabaseClient
+                        .from('orders')
+                        .update({
+                            status: 'dibatalkan',
+                            cancel_reason: reason
+                        })
+                        .eq('id', orderId);
+
+                    if (updErr) throw updErr;
+
+                    // Mengembalikan stok otomatis di Supabase
+                    try {
+                        await supabaseClient.rpc('restore_order_stock', { p_order_id: orderId });
+                    } catch (rErr) {
+                        console.warn("Restore stock rpc warning:", rErr);
+                    }
+                } else {
+                    const target = allOrders.find(o => o.id === orderId);
+                    if (target) {
+                        target.status = 'dibatalkan';
+                        target.cancel_reason = reason;
+                    }
+                }
+
+                closeAdminRejectOrderModal();
+                await fetchOrders();
+                await loadProducts(); // Refresh stok produk
+                showToast("Pesanan Dibatalkan", "Pesanan telah ditolak dan alasan berhasil disimpan.");
+            } catch (err) {
+                console.error("Gagal membatalkan pesanan:", err);
+                showToast("Gagal Membatalkan", err.message, true);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `Konfirmasi Tolak Pesanan`;
+            }
         }
 
         // ================= DATABASE PELANGGAN (TAB DASHBOARD) =================
@@ -2366,7 +2701,9 @@
                 // Hitung total order dari customer ini
                 const custOrders = allOrders.filter(o => o.customer_phone === c.phone);
                 const orderCount = custOrders.length;
-                const totalSpent = custOrders.reduce((sum, o) => sum + Number(o.total_amount || 0), 0);
+                const totalSpent = custOrders
+                    .filter(o => o.status !== 'dibatalkan')
+                    .reduce((sum, o) => sum + Number(o.total_amount || 0), 0);
 
                 return `
                     <tr class="hover:bg-crust-50/80 transition">
@@ -2383,7 +2720,7 @@
                         </td>
                         <td class="p-3 text-crust-500 text-[11px] whitespace-nowrap">${c.created_at ? new Date(c.created_at).toLocaleDateString('id-ID') : '-'}</td>
                         <td class="p-3 text-right">
-                            <a href="https://wa.me/${cleanPhone}?text=Halo%20${encodeURIComponent(c.name || 'Kak')}!%20Terima%20kasih%20telah%20menjadi%20pelanggan%20PO%20PROKDUK%20XOUR." target="_blank" class="p-1.5 text-emerald-700 hover:bg-emerald-100 rounded-lg inline-flex items-center gap-1" title="Chat WhatsApp">
+                            <a href="https://wa.me/${cleanPhone}?text=Halo%20${encodeURIComponent(c.name || 'Kak')}!%20Terima%20kasih%20telah%20menjadi%20pelanggan%20PO%20PRODUK%20XOUR." target="_blank" class="p-1.5 text-emerald-700 hover:bg-emerald-100 rounded-lg inline-flex items-center gap-1" title="Chat WhatsApp">
                                 <i class="fa-solid fa-comment-dots"></i> Chat
                             </a>
                         </td>
