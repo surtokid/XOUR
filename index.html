@@ -612,9 +612,9 @@
         </div>
     </div>
 
-    <!-- MODAL 1: LOGIN PELANGGAN (z-[60] AGAR SELALU DI ATAS KERANJANG) -->
-    <div id="customerAuthModal" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl border border-crust-200 transform transition-all">
+    <!-- MODAL 1: LOGIN PELANGGAN (z-[60] - CENTERED DI HP & DESKTOP) -->
+    <div id="customerAuthModal" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto min-h-[100dvh]">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl border border-crust-200 transform transition-all my-auto mx-auto">
             <div class="text-center mb-5">
                 <div class="w-14 h-14 rounded-2xl bg-crust-100 text-crust-700 flex items-center justify-center mx-auto mb-3 text-2xl">
                     <i class="fa-brands fa-whatsapp text-emerald-600 text-3xl"></i>
@@ -637,9 +637,9 @@
         </div>
     </div>
 
-    <!-- MODAL 2: PENGATURAN NAMA & ALAMAT PENGIRIMAN (z-[60] TAMPIL TEPAT DI ATAS KERANJANG) -->
-    <div id="customerProfileModal" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl border border-crust-200 transform transition-all">
+    <!-- MODAL 2: PENGATURAN NAMA & ALAMAT PENGIRIMAN (z-[60] - CENTERED DI HP & DESKTOP) -->
+    <div id="customerProfileModal" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto min-h-[100dvh]">
+        <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl border border-crust-200 transform transition-all my-auto mx-auto">
             <div class="flex items-center justify-between pb-3 border-b border-crust-200 mb-4">
                 <div>
                     <h3 class="font-serif text-lg font-bold text-crust-900">Data Pemesan & Pengiriman</h3>
@@ -673,8 +673,8 @@
     </div>
 
     <!-- MODAL: TAMBAH / EDIT PRODUK ADMIN -->
-    <div id="productEditModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-white w-full max-w-2xl rounded-3xl p-6 shadow-2xl border border-crust-200 max-h-[90vh] overflow-y-auto">
+    <div id="productEditModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto min-h-[100dvh]">
+        <div class="bg-white w-full max-w-2xl rounded-3xl p-6 shadow-2xl border border-crust-200 max-h-[90vh] overflow-y-auto my-auto mx-auto">
             <div class="flex items-center justify-between pb-3 border-b border-crust-200 mb-4">
                 <h3 id="productModalTitle" class="font-serif text-lg font-bold text-crust-900">Tambah Produk Sourdough</h3>
                 <button onclick="closeProductModal()" class="w-8 h-8 rounded-full hover:bg-crust-100 flex items-center justify-center text-crust-600">
@@ -695,9 +695,10 @@
                     </div>
                 </div>
 
+                <!-- Kolom Deskripsi Fleksibel Mengikuti Banyaknya Teks -->
                 <div>
                     <label class="block font-bold text-crust-800 mb-1">Deskripsi Produk Sourdough</label>
-                    <textarea id="prodDescription" rows="2" placeholder="Jelaskan karakteristik rasa, proses fermentasi, atau tips penyajian sourdough ini..." class="w-full p-2.5 rounded-xl border border-crust-200 bg-crust-50 text-xs"></textarea>
+                    <textarea id="prodDescription" rows="2" oninput="autoResizeTextarea(this)" placeholder="Jelaskan karakteristik rasa, proses fermentasi, atau tips penyajian sourdough ini..." class="w-full p-2.5 rounded-xl border border-crust-200 bg-crust-50 text-xs min-h-[60px] resize-none overflow-hidden transition-all leading-relaxed"></textarea>
                 </div>
 
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -785,8 +786,8 @@
     </div>
 
     <!-- MODAL: MASTER USER ADMIN -->
-    <div id="userModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl border border-crust-200">
+    <div id="userModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto min-h-[100dvh]">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl border border-crust-200 my-auto mx-auto">
             <h3 id="userModalTitle" class="font-serif text-lg font-bold text-crust-900 mb-4">Tambah User Admin</h3>
             <form onsubmit="handleUserFormSubmit(event)" class="space-y-3 text-xs">
                 <input type="hidden" id="editUserId">
@@ -811,8 +812,8 @@
     </div>
 
     <!-- MODAL: KONEKSI SUPABASE -->
-    <div id="supabaseConfigModal" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl border border-crust-200">
+    <div id="supabaseConfigModal" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto min-h-[100dvh]">
+        <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl border border-crust-200 my-auto mx-auto">
             <h3 class="font-serif text-lg font-bold text-crust-900 mb-2">Pengaturan Database Supabase</h3>
             <p class="text-xs text-crust-600 mb-4">Masukkan URL dan Anon Public Key dari Dashboard Supabase Anda (Project Settings > API).</p>
 
@@ -833,9 +834,9 @@
         </div>
     </div>
 
-    <!-- CUSTOM CONFIRMATION MODAL (z-[70]) -->
-    <div id="customConfirmModal" class="fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl border border-crust-200 text-center">
+    <!-- CUSTOM CONFIRMATION MODAL (z-[70] - CENTERED) -->
+    <div id="customConfirmModal" class="fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4 overflow-y-auto min-h-[100dvh]">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl border border-crust-200 text-center my-auto mx-auto">
             <div class="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-3 text-xl">
                 <i class="fa-solid fa-triangle-exclamation"></i>
             </div>
@@ -848,12 +849,12 @@
         </div>
     </div>
 
-    <!-- CUSTOM TOAST NOTIFICATION (z-[80]) -->
-    <div id="toastNotification" class="fixed bottom-5 right-5 z-[80] transform translate-y-20 opacity-0 transition-all duration-300 max-w-sm w-full bg-crust-900 text-white p-4 rounded-2xl shadow-xl flex items-start gap-3 border border-crust-700 pointer-events-none">
-        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-lg mt-0.5"></i>
-        <div class="flex-grow">
+    <!-- CUSTOM TOAST NOTIFICATION (z-[80] - PRESISI DI TENGAH LAYAR HP) -->
+    <div id="toastNotification" class="fixed bottom-6 left-4 right-4 sm:left-auto sm:right-6 sm:w-96 z-[80] transform translate-y-24 opacity-0 transition-all duration-300 max-w-sm mx-auto bg-crust-900 text-white p-4 rounded-2xl shadow-2xl flex items-start gap-3 border border-crust-700 pointer-events-none">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-lg mt-0.5 flex-shrink-0"></i>
+        <div class="flex-grow min-w-0">
             <h4 id="toastTitle" class="font-bold text-xs">Pemberitahuan</h4>
-            <p id="toastMessage" class="text-xs text-crust-200 mt-0.5 font-light">Pesan detail</p>
+            <p id="toastMessage" class="text-xs text-crust-200 mt-0.5 font-light break-words">Pesan detail</p>
         </div>
     </div>
 
@@ -929,6 +930,13 @@
             return 'Rp ' + Number(num || 0).toLocaleString('id-ID');
         }
 
+        // Textarea auto-resize height menyesuaikan isi teks
+        function autoResizeTextarea(element) {
+            if (!element) return;
+            element.style.height = 'auto';
+            element.style.height = Math.max(60, element.scrollHeight) + 'px';
+        }
+
         function showToast(title, message, isError = false) {
             const toast = document.getElementById('toastNotification');
             const icon = document.getElementById('toastIcon');
@@ -939,14 +947,14 @@
             msgEl.textContent = message;
 
             if (isError) {
-                icon.className = "fa-solid fa-circle-exclamation text-rose-400 text-lg mt-0.5";
+                icon.className = "fa-solid fa-circle-exclamation text-rose-400 text-lg mt-0.5 flex-shrink-0";
             } else {
-                icon.className = "fa-solid fa-circle-check text-emerald-400 text-lg mt-0.5";
+                icon.className = "fa-solid fa-circle-check text-emerald-400 text-lg mt-0.5 flex-shrink-0";
             }
 
-            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.remove('translate-y-24', 'opacity-0');
             setTimeout(() => {
-                toast.classList.add('translate-y-20', 'opacity-0');
+                toast.classList.add('translate-y-24', 'opacity-0');
             }, 3800);
         }
 
@@ -1833,7 +1841,7 @@
             renderCartList();
         }
 
-        // ================= CHECKOUT PESANAN (WAJIB NAMA & ALAMAT) =================
+        // ================= CHECKOUT PESANAN (WA ADMIN: +6287724425959) =================
         async function submitOrder() {
             if (cart.length === 0) {
                 showToast("Keranjang Kosong", "Silakan pilih minimal 1 sourdough sebelum memesan.", true);
@@ -1936,8 +1944,9 @@
                 await loadProducts();
                 showToast("Order Berhasil Dibuat!", "Pesanan telah tersimpan di sistem.");
 
+                // Nomor WhatsApp Admin yang telah diperbarui: +6287724425959
                 const encodedMsg = encodeURIComponent(waMessage);
-                window.open(`https://wa.me/6281234567890?text=${encodedMsg}`, '_blank');
+                window.open(`https://wa.me/6287724425959?text=${encodedMsg}`, '_blank');
 
             } catch (err) {
                 console.error("Gagal mengirim pesanan:", err);
@@ -2566,7 +2575,11 @@
             const modal = document.getElementById('productEditModal');
             document.getElementById('productForm').reset();
             document.getElementById('editProductId').value = '';
-            document.getElementById('prodDescription').value = '';
+            
+            const descEl = document.getElementById('prodDescription');
+            descEl.value = '';
+            descEl.style.height = '60px';
+
             document.getElementById('productModalTitle').textContent = isEdit ? 'Edit Produk Sourdough' : 'Tambah Produk Sourdough';
             document.getElementById('variantsInputContainer').innerHTML = '';
             currentEditingPhotos = [];
@@ -2845,7 +2858,11 @@
             document.getElementById('editProductId').value = prod.id;
             document.getElementById('prodCode').value = prod.code || '';
             document.getElementById('prodName').value = prod.name || '';
-            document.getElementById('prodDescription').value = prod.description || '';
+            
+            const descEl = document.getElementById('prodDescription');
+            descEl.value = prod.description || '';
+            autoResizeTextarea(descEl);
+
             document.getElementById('prodStockMode').value = prod.stock_mode || 'shared';
             document.getElementById('prodSharedStock').value = prod.shared_stock || 0;
             document.getElementById('prodStatus').value = prod.status || 'aktif';
