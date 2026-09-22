@@ -93,10 +93,12 @@
             </a>
 
             <div class="flex items-center gap-3">
-                <!-- Customer info badge saat sudah login -->
+                <!-- Customer info badge saat sudah login (Bisa diklik untuk perbarui nama & alamat) -->
                 <div id="customerInfoBadge" class="hidden items-center gap-2 bg-crust-100 text-crust-900 px-3 py-1.5 rounded-full border border-crust-300 text-xs sm:text-sm font-medium">
-                    <i class="fa-solid fa-user-check text-emerald-600"></i>
-                    <span id="customerNameBadge" class="truncate max-w-[110px] sm:max-w-[160px]">Pelanggan</span>
+                    <button onclick="openCustomerProfileModal()" class="flex items-center gap-1.5 hover:text-crust-700 text-left" title="Klik untuk edit profil & alamat">
+                        <i class="fa-solid fa-user-check text-emerald-600"></i>
+                        <span id="customerNameBadge" class="truncate max-w-[100px] sm:max-w-[150px]">Pelanggan</span>
+                    </button>
                     <button onclick="logoutCustomer()" title="Ganti Nomor / Keluar" class="text-crust-500 hover:text-red-600 ml-1">
                         <i class="fa-solid fa-arrow-right-from-bracket"></i>
                     </button>
@@ -109,8 +111,8 @@
                     <span id="cartCount" class="bg-accent text-white text-[11px] font-bold px-1.5 py-0.5 rounded-full min-w-[20px] text-center">0</span>
                 </button>
 
-                <!-- Shortcut ke dashboard -->
-                <a href="#dashboard" onclick="navigateTo('dashboard')" class="text-xs text-crust-600 hover:text-crust-900 p-2 rounded-lg hover:bg-crust-100 transition" title="Menu Pengelola Dashboard">
+                <!-- Shortcut ke dashboard (Disembunyikan) -->
+                <a href="#dashboard" onclick="navigateTo('dashboard')" class="hidden text-xs text-crust-600 hover:text-crust-900 p-2 rounded-lg hover:bg-crust-100 transition" title="Menu Pengelola Dashboard">
                     <i class="fa-solid fa-sliders text-base"></i>
                 </a>
             </div>
@@ -141,32 +143,31 @@
     </div>
 
     <!-- ================= HALAMAN ORDER PELANGGAN ================= -->
-    <main id="orderView" class="flex-grow max-w-6xl w-full mx-auto px-4 py-6">
+    <main id="orderView" class="flex-grow max-w-6xl w-full mx-auto px-3 sm:px-4 py-6">
         <!-- Hero Banner Sourdough -->
-        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-crust-800 via-crust-900 to-stone-900 text-white p-6 sm:p-10 mb-8 shadow-xl border border-crust-700">
+        <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-crust-800 via-crust-900 to-stone-900 text-white p-5 sm:p-10 mb-6 shadow-xl border border-crust-700">
             <div class="relative z-10 max-w-xl">
                 <span class="inline-block bg-crust-600/60 backdrop-blur text-crust-100 text-xs px-3 py-1 rounded-full font-medium mb-3 border border-crust-500/30">
                     Naturally Fermented & 100% Wild Yeast
                 </span>
                 <h2 class="font-serif text-2xl sm:text-4xl font-bold leading-tight mb-2">Artisan Sourdough Bread & Pastry Batch</h2>
-                <p class="text-crust-200 text-sm sm:text-base mb-5 font-light">Dipanggang segar dengan fermentasi lambat 24-36 jam untuk tekstur renyah di luar dan lembut kenyal di dalam.</p>
-                <div class="flex flex-wrap gap-2 text-xs">
-                    <span class="bg-white/10 px-3 py-1 rounded-lg"><i class="fa-solid fa-leaf text-emerald-400 mr-1"></i> Tanpa Pengawet</span>
-                    <span class="bg-white/10 px-3 py-1 rounded-lg"><i class="fa-solid fa-wheat-awn text-amber-300 mr-1"></i> Tepung Gandum Pilihan</span>
-                    <span class="bg-white/10 px-3 py-1 rounded-lg"><i class="fa-solid fa-heart-circle-check text-rose-300 mr-1"></i> Ramah Pencernaan</span>
+                <p class="text-crust-200 text-xs sm:text-base mb-4 font-light">Dipanggang segar dengan fermentasi lambat 24-36 jam untuk tekstur renyah di luar dan lembut kenyal di dalam.</p>
+                <div class="flex flex-wrap gap-2 text-[11px] sm:text-xs">
+                    <span class="bg-white/10 px-2.5 py-1 rounded-lg"><i class="fa-solid fa-leaf text-emerald-400 mr-1"></i> Tanpa Pengawet</span>
+                    <span class="bg-white/10 px-2.5 py-1 rounded-lg"><i class="fa-solid fa-wheat-awn text-amber-300 mr-1"></i> Tepung Pilihan</span>
+                    <span class="bg-white/10 px-2.5 py-1 rounded-lg"><i class="fa-solid fa-heart-circle-check text-rose-300 mr-1"></i> Ramah Cerna</span>
                 </div>
             </div>
-            <!-- Decorative SVG Dough Shape in background -->
             <div class="absolute -right-10 -bottom-10 opacity-15 pointer-events-none text-crust-300">
-                <i class="fa-solid fa-bread-slice text-[260px]"></i>
+                <i class="fa-solid fa-bread-slice text-[220px] sm:text-[260px]"></i>
             </div>
         </div>
 
         <!-- Filter, Pencarian & Urutan -->
-        <div class="bg-white p-4 rounded-2xl border border-crust-200 shadow-sm mb-6 flex flex-col md:flex-row gap-3 items-center justify-between">
+        <div class="bg-white p-3.5 sm:p-4 rounded-2xl border border-crust-200 shadow-sm mb-6 flex flex-col md:flex-row gap-3 items-center justify-between">
             <div class="relative w-full md:w-80">
                 <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-crust-400"></i>
-                <input type="text" id="searchInput" oninput="filterAndRenderCatalog()" placeholder="Cari nama roti sourdough, pastry..." class="w-full pl-10 pr-4 py-2 text-sm rounded-xl border border-crust-200 focus:outline-none focus:ring-2 focus:ring-crust-500 bg-crust-50/50">
+                <input type="text" id="searchInput" oninput="filterAndRenderCatalog()" placeholder="Cari nama sourdough, pastry..." class="w-full pl-10 pr-4 py-2 text-xs sm:text-sm rounded-xl border border-crust-200 focus:outline-none focus:ring-2 focus:ring-crust-500 bg-crust-50/50">
             </div>
 
             <div class="flex items-center gap-2 w-full md:w-auto justify-end">
@@ -180,7 +181,7 @@
             </div>
         </div>
 
-        <!-- Product Catalog Grid -->
+        <!-- Product Catalog Grid: 2 Produk Kiri Kanan Penuh (Grid Cols 2) -->
         <div id="catalogLoading" class="text-center py-16">
             <i class="fa-solid fa-circle-notch fa-spin text-3xl text-crust-600 mb-3"></i>
             <p class="text-sm text-crust-600 font-medium">Menyiapkan etalase sourdough...</p>
@@ -192,8 +193,91 @@
             <p class="text-xs text-crust-600 mt-1 max-w-md mx-auto">Silakan hubungi admin atau buka dashboard untuk menambahkan menu batch baru.</p>
         </div>
 
-        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- GRID 2 KOLOM KIRI KANAN BERKELANJUTAN -->
+        <div id="productGrid" class="grid grid-cols-2 gap-3 sm:gap-6">
             <!-- Dynamic product cards will be inserted here -->
+        </div>
+    </main>
+
+    <!-- ================= HALAMAN DETAIL PRODUK DENGAN ID (#product/:id) ================= -->
+    <main id="productDetailView" class="hidden flex-grow max-w-4xl w-full mx-auto px-3 sm:px-4 py-6">
+        <!-- Tombol Kembali ke Katalog Form PO -->
+        <div class="mb-4">
+            <button onclick="navigateToCatalog()" class="inline-flex items-center gap-2 text-xs sm:text-sm font-semibold text-crust-800 hover:text-crust-950 bg-white hover:bg-crust-100 px-4 py-2.5 rounded-2xl border border-crust-200 shadow-sm transition">
+                <i class="fa-solid fa-arrow-left text-crust-600"></i>
+                <span>Kembali ke Form Order PO</span>
+            </button>
+        </div>
+
+        <div class="bg-white rounded-3xl overflow-hidden shadow-md border border-crust-200/90 grid grid-cols-1 md:grid-cols-2">
+            <!-- Kolom Kiri: Slider Foto Persegi 1:1 & Navigasi Geser -->
+            <div class="p-3 sm:p-6 bg-crust-50/50 border-b md:border-b-0 md:border-r border-crust-200/70 flex flex-col justify-start">
+                <div class="relative w-full aspect-square bg-crust-100 rounded-2xl select-none overflow-hidden group shadow-inner border border-crust-200">
+                    <div id="detailSliderTrack" class="w-full h-full flex transition-transform duration-300 ease-out">
+                        <!-- Dynamic slide images -->
+                    </div>
+
+                    <!-- Slider Arrows -->
+                    <button id="sliderPrevBtn" type="button" onclick="prevDetailPhoto()" class="hidden absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 hover:bg-black/70 text-white items-center justify-center text-xs backdrop-blur-sm transition shadow">
+                        <i class="fa-solid fa-chevron-left"></i>
+                    </button>
+                    <button id="sliderNextBtn" type="button" onclick="nextDetailPhoto()" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 hover:bg-black/70 text-white items-center justify-center text-xs backdrop-blur-sm transition shadow">
+                        <i class="fa-solid fa-chevron-right"></i>
+                    </button>
+
+                    <!-- Indicator Dots / Badge -->
+                    <div id="sliderDotsContainer" class="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex items-center gap-1.5 bg-black/50 backdrop-blur-sm px-3 py-1 rounded-full text-white text-[11px] font-semibold">
+                        <span id="sliderCounterText">1 / 1</span>
+                    </div>
+                </div>
+
+                <!-- Thumbnail switcher bawah foto -->
+                <div id="detailThumbnailList" class="flex items-center gap-2 mt-3 overflow-x-auto py-1">
+                    <!-- Dynamic thumbnails -->
+                </div>
+            </div>
+
+            <!-- Kolom Kanan: Rincian Produk & Pilihan Varian Mandiri -->
+            <div class="p-4 sm:p-6 flex flex-col justify-between space-y-5">
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <span id="detailModalCode" class="text-[11px] font-mono text-crust-600 bg-crust-100 px-2 py-0.5 rounded-md font-bold uppercase tracking-wider">KODE-ITEM</span>
+                            <span id="detailStockModeNotice" class="text-[11px] text-crust-500 font-medium"></span>
+                        </div>
+                        <h2 id="detailModalTitle" class="font-serif text-xl sm:text-2xl font-bold text-crust-900 mt-2 leading-snug">Nama Produk</h2>
+                        <p id="detailModalBakeDate" class="text-xs text-amber-800 font-medium mt-1.5 hidden"></p>
+                    </div>
+
+                    <div>
+                        <h4 class="text-[11px] font-bold uppercase tracking-wider text-crust-700 mb-1.5">Deskripsi Produk:</h4>
+                        <p id="detailModalDesc" class="text-xs sm:text-sm text-crust-800 font-normal leading-relaxed whitespace-pre-line bg-crust-50 p-3.5 rounded-2xl border border-crust-200/70"></p>
+                    </div>
+
+                    <div>
+                        <div class="flex items-center justify-between mb-2.5">
+                            <label class="block text-xs font-bold uppercase tracking-wider text-crust-900">PILIH VARIAN:</label>
+                            <span class="text-[10px] text-crust-500 font-medium">Bisa pesan lebih dari 1 varian</span>
+                        </div>
+                        <div id="detailVariantsList" class="space-y-2.5">
+                            <!-- Dynamic variant rows with individual steppers -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bagian Bawah: Ringkasan & Tombol Tambah ke Keranjang -->
+                <div class="pt-4 border-t border-crust-200/80 bg-white">
+                    <div class="flex items-center justify-between mb-3">
+                        <div>
+                            <span id="detailSelectedCountLabel" class="text-xs text-crust-600 block font-medium">0 varian dipilih</span>
+                            <span id="detailModalTotal" class="font-serif font-bold text-lg sm:text-xl text-crust-900">Rp 0</span>
+                        </div>
+                        <button id="detailAddToCartBtn" onclick="confirmAddToCart()" disabled class="bg-crust-300 cursor-not-allowed text-white font-bold text-xs sm:text-sm px-5 py-3 rounded-2xl shadow transition flex items-center gap-2">
+                            <i class="fa-solid fa-plus"></i> Tambah ke Keranjang
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 
@@ -205,7 +289,7 @@
                 <i class="fa-solid fa-lock"></i>
             </div>
             <h2 class="font-serif text-2xl font-bold text-crust-900 mb-1">Masuk Dashboard</h2>
-            <p class="text-xs text-crust-600 mb-6">Kelola stok, varian, dan pesanan PO PRODUK XOUR</p>
+            <p class="text-xs text-crust-600 mb-6">Kelola stok, pelanggan, dan pesanan PO PRODUK XOUR</p>
 
             <form id="adminLoginForm" onsubmit="handleAdminLogin(event)" class="space-y-4 text-left">
                 <div>
@@ -258,6 +342,9 @@
                 </button>
                 <button onclick="switchAdminTab('products')" id="tabBtn-products" class="admin-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-white text-crust-700 hover:bg-crust-100 border border-crust-200">
                     <i class="fa-solid fa-bread-slice mr-1.5"></i> Master Produk & Varian
+                </button>
+                <button onclick="switchAdminTab('customers')" id="tabBtn-customers" class="admin-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-white text-crust-700 hover:bg-crust-100 border border-crust-200">
+                    <i class="fa-solid fa-address-book mr-1.5"></i> Database Pelanggan <span id="badgeCustomerCount" class="ml-1 px-1.5 py-0.5 rounded-full text-[10px] bg-emerald-600 text-white">0</span>
                 </button>
                 <button onclick="switchAdminTab('users')" id="tabBtn-users" class="admin-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-white text-crust-700 hover:bg-crust-100 border border-crust-200">
                     <i class="fa-solid fa-users-gear mr-1.5"></i> Master User Admin
@@ -327,7 +414,7 @@
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-crust-200">
                     <div class="relative flex-grow max-w-sm">
                         <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-crust-400"></i>
-                        <input type="text" id="orderSearchInput" oninput="renderOrdersTable()" placeholder="Cari nama atau WhatsApp pelanggan..." class="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl border border-crust-200 bg-crust-50">
+                        <input type="text" id="orderSearchInput" oninput="renderOrdersTable()" placeholder="Cari nama, WhatsApp, atau alamat..." class="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl border border-crust-200 bg-crust-50">
                     </div>
                     <div class="flex items-center gap-2">
                         <select id="orderStatusFilter" onchange="renderOrdersTable()" class="text-xs border border-crust-200 rounded-xl p-2 bg-crust-50">
@@ -351,7 +438,6 @@
 
             <!-- TAB 3: MASTER PRODUK & VARIAN -->
             <section id="tabContent-products" class="hidden space-y-4">
-                <!-- Action Controls for Products -->
                 <div class="bg-white p-4 rounded-2xl border border-crust-200 shadow-sm flex flex-wrap items-center justify-between gap-3">
                     <div class="flex flex-wrap items-center gap-2">
                         <button onclick="openProductModal()" class="bg-crust-700 hover:bg-crust-800 text-white text-xs font-semibold px-4 py-2.5 rounded-xl transition flex items-center gap-1.5 shadow">
@@ -400,7 +486,47 @@
                 </div>
             </section>
 
-            <!-- TAB 4: MASTER USER ADMIN -->
+            <!-- TAB 4: DATABASE PELANGGAN -->
+            <section id="tabContent-customers" class="hidden space-y-4">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white p-4 rounded-2xl border border-crust-200">
+                    <div>
+                        <h3 class="font-serif font-bold text-base text-crust-900">Database Pelanggan Sourdough</h3>
+                        <p class="text-xs text-crust-600">Daftar pelanggan terdaftar berdasarkan nomor WhatsApp beserta alamat pengiriman</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="relative w-64">
+                            <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-crust-400"></i>
+                            <input type="text" id="customerSearchInput" oninput="renderCustomersTable()" placeholder="Cari nama, WhatsApp, alamat..." class="w-full pl-9 pr-3 py-1.5 text-xs rounded-xl border border-crust-200 bg-crust-50">
+                        </div>
+                        <button onclick="fetchCustomers()" class="text-xs bg-crust-100 hover:bg-crust-200 text-crust-800 p-2 rounded-xl transition" title="Refresh Data Pelanggan">
+                            <i class="fa-solid fa-rotate"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Customers Table -->
+                <div class="bg-white rounded-2xl border border-crust-200 shadow-sm overflow-hidden">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead class="bg-crust-100 text-crust-900 font-bold border-b border-crust-200">
+                                <tr>
+                                    <th class="p-3">NO. WHATSAPP</th>
+                                    <th class="p-3">NAMA PELANGGAN</th>
+                                    <th class="p-3">ALAMAT LENGKAP PENGIRIMAN</th>
+                                    <th class="p-3">TOTAL ORDER</th>
+                                    <th class="p-3">TERDAFTAR</th>
+                                    <th class="p-3 text-right">AKSI</th>
+                                </tr>
+                            </thead>
+                            <tbody id="customersTableBody" class="divide-y divide-crust-100">
+                                <!-- Dynamic customer rows -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TAB 5: MASTER USER ADMIN -->
             <section id="tabContent-users" class="hidden space-y-4">
                 <div class="bg-white p-4 rounded-2xl border border-crust-200 shadow-sm flex items-center justify-between">
                     <div>
@@ -431,97 +557,7 @@
         </div>
     </main>
 
-    <!-- MODAL: LOGIN PELANGGAN (NAMA & WHATSAPP) -->
-    <div id="customerAuthModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl border border-crust-200 transform transition-all">
-            <div class="text-center mb-5">
-                <div class="w-14 h-14 rounded-2xl bg-crust-100 text-crust-700 flex items-center justify-center mx-auto mb-3 text-2xl">
-                    <i class="fa-solid fa-basket-shopping"></i>
-                </div>
-                <h3 class="font-serif text-xl font-bold text-crust-900">Masuk untuk Memesan</h3>
-                <p class="text-xs text-crust-600 mt-1">Pesanan dan keranjang Anda akan tersimpan otomatis berdasarkan nomor WhatsApp</p>
-            </div>
-
-            <form onsubmit="handleCustomerLoginSubmit(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-crust-800 mb-1">Nama Lengkap</label>
-                    <input type="text" id="custModalName" required placeholder="Contoh: Sarah Wijaya" class="w-full px-4 py-2.5 rounded-xl border border-crust-200 text-sm focus:ring-2 focus:ring-crust-500 focus:outline-none bg-crust-50">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-crust-800 mb-1">Nomor WhatsApp</label>
-                    <input type="tel" id="custModalPhone" required placeholder="Contoh: 081234567890" class="w-full px-4 py-2.5 rounded-xl border border-crust-200 text-sm focus:ring-2 focus:ring-crust-500 focus:outline-none bg-crust-50">
-                    <p class="text-[11px] text-crust-500 mt-1">Harus diawali <strong>08</strong> dan minimal 10 digit.</p>
-                </div>
-                <div class="flex gap-2 pt-2">
-                    <button type="button" onclick="closeCustomerAuthModal()" class="w-1/2 py-2.5 rounded-xl border border-crust-300 text-crust-700 text-xs font-semibold hover:bg-crust-50">Batal</button>
-                    <button type="submit" class="w-1/2 py-2.5 rounded-xl bg-crust-700 hover:bg-crust-800 text-white text-xs font-bold transition shadow">Masuk Sekarang</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- MODAL: DETAIL PRODUK, SLIDER FOTO & PILIH VARIAN MULTI -->
-    <div id="productDetailModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
-        <div class="bg-white w-full max-w-lg rounded-3xl overflow-hidden shadow-2xl border border-crust-200 flex flex-col max-h-[90vh]">
-            <!-- Photo Slider Container with Swipe & Navigation (Persegi 1:1) -->
-            <div class="relative w-full aspect-square max-h-[380px] bg-crust-100 flex-shrink-0 select-none overflow-hidden group">
-                <div id="detailSliderTrack" class="w-full h-full flex transition-transform duration-300 ease-out">
-                    <!-- Dynamic slide images injected here -->
-                </div>
-
-                <!-- Slider Arrows (Muncul jika foto > 1) -->
-                <button id="sliderPrevBtn" type="button" onclick="prevDetailPhoto()" class="hidden absolute left-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 hover:bg-black/70 text-white items-center justify-center text-xs backdrop-blur-sm transition shadow">
-                    <i class="fa-solid fa-chevron-left"></i>
-                </button>
-                <button id="sliderNextBtn" type="button" onclick="nextDetailPhoto()" class="hidden absolute right-2.5 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-black/40 hover:bg-black/70 text-white items-center justify-center text-xs backdrop-blur-sm transition shadow">
-                    <i class="fa-solid fa-chevron-right"></i>
-                </button>
-
-                <!-- Indicator Dots / Badge -->
-                <div id="sliderDotsContainer" class="absolute bottom-2.5 left-1/2 -translate-x-1/2 flex items-center gap-1.5 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-full text-white text-[10px] font-semibold">
-                    <span id="sliderCounterText">1 / 1</span>
-                </div>
-
-                <!-- Close Modal Button -->
-                <button onclick="closeProductDetailModal()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/40 hover:bg-black/60 text-white flex items-center justify-center text-sm transition backdrop-blur-sm z-10">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <!-- Content Area: Detail Produk & Multi Varian -->
-            <div class="p-5 overflow-y-auto flex-grow space-y-4">
-                <div>
-                    <span id="detailModalCode" class="text-[11px] font-mono text-crust-500 font-semibold uppercase">KODE-ITEM</span>
-                    <h3 id="detailModalTitle" class="font-serif text-xl font-bold text-crust-900">Nama Produk</h3>
-                    <p id="detailModalDesc" class="text-xs text-crust-700 mt-2 font-normal leading-relaxed whitespace-pre-line bg-crust-50/80 p-3 rounded-xl border border-crust-200/60"></p>
-                    <p id="detailModalBakeDate" class="text-[11px] text-amber-800 font-medium mt-2 flex items-center gap-1.5"></p>
-                </div>
-
-                <div>
-                    <div class="flex items-center justify-between mb-2">
-                        <label class="block text-xs font-bold uppercase tracking-wider text-crust-800">PILIH VARIAN:</label>
-                        <span id="detailStockModeNotice" class="text-[10px] text-crust-500 font-medium"></span>
-                    </div>
-                    <div id="detailVariantsList" class="space-y-2.5">
-                        <!-- Dynamic variant rows with individual steppers -->
-                    </div>
-                </div>
-            </div>
-
-            <!-- Modal Footer: Summary & Add to Cart -->
-            <div class="p-4 bg-white border-t border-crust-100 flex items-center justify-between gap-3 flex-shrink-0">
-                <div>
-                    <span id="detailSelectedCountLabel" class="text-[11px] text-crust-500 block">0 varian dipilih</span>
-                    <span id="detailModalTotal" class="font-serif font-bold text-base text-crust-900">Rp 0</span>
-                </div>
-                <button id="detailAddToCartBtn" onclick="confirmAddToCart()" class="bg-crust-700 hover:bg-crust-800 text-white font-bold text-xs sm:text-sm px-6 py-2.5 rounded-xl shadow transition flex items-center gap-2">
-                    <i class="fa-solid fa-plus"></i> Tambah ke Keranjang
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- MODAL / DRAWER: KERANJANG BELANJA -->
+    <!-- DRAWER: KERANJANG BELANJA (z-50) -->
     <div id="cartModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-end">
         <div class="bg-white w-full max-w-md h-full shadow-2xl flex flex-col justify-between border-l border-crust-200">
             <!-- Cart Header -->
@@ -542,6 +578,18 @@
 
             <!-- Cart Footer -->
             <div class="p-4 border-t border-crust-200 bg-flour space-y-3">
+                <!-- Customer Delivery Preview -->
+                <div id="cartCustomerDeliveryBox" class="bg-white p-3 rounded-xl border border-crust-200 space-y-1 text-xs shadow-sm">
+                    <div class="flex items-center justify-between text-crust-800 font-bold">
+                        <span><i class="fa-solid fa-location-dot text-rose-500 mr-1"></i> Tujuan Pengiriman:</span>
+                        <button onclick="openCustomerProfileModal()" class="text-xs text-amber-700 hover:text-amber-900 font-bold bg-amber-50 hover:bg-amber-100 border border-amber-300 px-2.5 py-1 rounded-lg transition shadow-xs flex items-center gap-1">
+                            <i class="fa-solid fa-pen-to-square text-[10px]"></i> Ubah
+                        </button>
+                    </div>
+                    <p id="cartDeliveryName" class="font-semibold text-crust-900">-</p>
+                    <p id="cartDeliveryAddress" class="text-crust-600 text-[11px] line-clamp-2 leading-relaxed">Belum ada alamat pengiriman.</p>
+                </div>
+
                 <div class="space-y-1 text-xs">
                     <div class="flex justify-between text-crust-600">
                         <span>Total Item:</span>
@@ -554,13 +602,73 @@
                 </div>
 
                 <div class="text-[11px] bg-crust-100/80 p-2.5 rounded-xl text-crust-700 border border-crust-200">
-                    <i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i> Setelah klik order, pesanan masuk ke dashboard dan dapat langsung dikonfirmasi ke WhatsApp admin.
+                    <i class="fa-brands fa-whatsapp text-emerald-600 mr-1"></i> Setelah klik order, pesanan masuk ke database dashboard dan dapat langsung dikonfirmasi ke WhatsApp admin.
                 </div>
 
                 <button id="submitOrderBtn" onclick="submitOrder()" class="w-full bg-emerald-700 hover:bg-emerald-800 text-white font-bold py-3 rounded-xl shadow-md transition flex items-center justify-center gap-2 text-sm">
                     <i class="fa-solid fa-check"></i> Order Sekarang
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- MODAL 1: LOGIN PELANGGAN (z-[60] AGAR SELALU DI ATAS KERANJANG) -->
+    <div id="customerAuthModal" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl border border-crust-200 transform transition-all">
+            <div class="text-center mb-5">
+                <div class="w-14 h-14 rounded-2xl bg-crust-100 text-crust-700 flex items-center justify-center mx-auto mb-3 text-2xl">
+                    <i class="fa-brands fa-whatsapp text-emerald-600 text-3xl"></i>
+                </div>
+                <h3 class="font-serif text-xl font-bold text-crust-900">Masuk dengan WhatsApp</h3>
+                <p class="text-xs text-crust-600 mt-1">Gunakan nomor WhatsApp aktif Anda untuk mulai memesan sourdough</p>
+            </div>
+
+            <form onsubmit="handleCustomerLoginSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-crust-800 mb-1">Nomor WhatsApp Aktif *</label>
+                    <input type="tel" id="custModalPhoneOnly" required placeholder="Contoh: 081234567890" class="w-full px-4 py-2.5 rounded-xl border border-crust-200 text-sm focus:ring-2 focus:ring-crust-500 focus:outline-none bg-crust-50">
+                    <p class="text-[11px] text-crust-500 mt-1">Diawali angka <strong>08</strong> dan minimal 10 digit.</p>
+                </div>
+                <div class="flex gap-2 pt-2">
+                    <button type="button" onclick="closeCustomerAuthModal()" class="w-1/2 py-2.5 rounded-xl border border-crust-300 text-crust-700 text-xs font-semibold hover:bg-crust-50">Batal</button>
+                    <button type="submit" id="btnSubmitCustLogin" class="w-1/2 py-2.5 rounded-xl bg-crust-700 hover:bg-crust-800 text-white text-xs font-bold transition shadow">Lanjutkan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: PENGATURAN NAMA & ALAMAT PENGIRIMAN (z-[60] TAMPIL TEPAT DI ATAS KERANJANG) -->
+    <div id="customerProfileModal" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl border border-crust-200 transform transition-all">
+            <div class="flex items-center justify-between pb-3 border-b border-crust-200 mb-4">
+                <div>
+                    <h3 class="font-serif text-lg font-bold text-crust-900">Data Pemesan & Pengiriman</h3>
+                    <p class="text-[11px] text-crust-500">Lengkapi nama dan alamat lengkap untuk pengantaran pesanan</p>
+                </div>
+                <button onclick="closeCustomerProfileModal()" class="w-8 h-8 rounded-full hover:bg-crust-100 flex items-center justify-center text-crust-600">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <form onsubmit="handleCustomerProfileSubmit(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-crust-800 mb-1">Nomor WhatsApp Terdaftar</label>
+                    <input type="text" id="profModalPhone" disabled class="w-full px-4 py-2 rounded-xl border border-crust-200 text-xs bg-crust-100/70 text-crust-600 font-mono">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-crust-800 mb-1">Nama Lengkap Pemesan *</label>
+                    <input type="text" id="profModalName" required placeholder="Contoh: Sarah Wijaya" class="w-full px-4 py-2.5 rounded-xl border border-crust-200 text-sm focus:ring-2 focus:ring-crust-500 focus:outline-none bg-crust-50">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-crust-800 mb-1">Alamat Lengkap Pengiriman *</label>
+                    <textarea id="profModalAddress" required rows="3" placeholder="Jl. Anggrek No. 12 RT 01 RW 04, Kelurahan ..., Kecamatan ..., Kota ..., Patokan / Catatan..." class="w-full px-4 py-2.5 rounded-xl border border-crust-200 text-xs focus:ring-2 focus:ring-crust-500 focus:outline-none bg-crust-50 leading-relaxed"></textarea>
+                    <p class="text-[10px] text-crust-500 mt-1">Harap tuliskan jalan, nomor rumah, RT/RW, dan patokan agar kurir mudah menemukan lokasi.</p>
+                </div>
+                <div class="flex gap-2 pt-2">
+                    <button type="button" onclick="closeCustomerProfileModal()" class="w-1/3 py-2.5 rounded-xl border border-crust-300 text-crust-700 text-xs font-semibold hover:bg-crust-50">Tutup</button>
+                    <button type="submit" id="btnSaveCustProfile" class="w-2/3 py-2.5 rounded-xl bg-crust-700 hover:bg-crust-800 text-white text-xs font-bold transition shadow">Simpan Data & Lanjutkan</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -602,7 +710,6 @@
                         <p class="text-[10px] text-crust-500 mt-1">Jika "Stok All 1 Produk", semua varian berbagi 1 kuota dan kolom stok varian disembunyikan.</p>
                     </div>
 
-                    <!-- Pengaturan Stok Berdasarkan Tanggal (Aktif / Nonaktif) -->
                     <div>
                         <label class="block font-bold text-crust-800 mb-1">Stok Per Tanggal</label>
                         <select id="prodDateStockToggle" onchange="toggleStockModeFields()" class="w-full p-2.5 rounded-xl border border-crust-200 bg-crust-50">
@@ -613,7 +720,6 @@
                     </div>
                 </div>
 
-                <!-- Bagian Pengaturan Jumlah Stok & Tanggal -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 p-3 bg-crust-50/80 rounded-2xl border border-crust-200">
                     <div id="dateStockPickerWrapper" class="hidden">
                         <label class="block font-bold text-crust-800 mb-1">Pilih Tanggal Batch / PO *</label>
@@ -634,7 +740,7 @@
                     </div>
                 </div>
 
-                <!-- SECTION FOTO PRODUK (MAX 5 FOTO DENGAN LOGO PLUS '+') -->
+                <!-- SECTION FOTO PRODUK (MAX 5 FOTO) -->
                 <div class="border-t border-crust-200 pt-3">
                     <div class="flex items-center justify-between mb-2">
                         <div>
@@ -644,9 +750,7 @@
                         <span id="photoCountBadge" class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-crust-200 text-crust-800">0/5 Foto</span>
                     </div>
 
-                    <!-- Container Grid Foto Produk -->
                     <div class="grid grid-cols-3 sm:grid-cols-5 gap-3 p-3 bg-crust-50 rounded-2xl border border-dashed border-crust-300 min-h-[100px] items-center" id="productPhotoGallery">
-                        <!-- Upload Slot / Button Plus (+) -->
                         <label id="addPhotoBtn" class="flex flex-col items-center justify-center h-24 rounded-xl border-2 border-dashed border-crust-400 hover:border-crust-700 bg-white hover:bg-crust-100/50 cursor-pointer transition text-crust-600 hover:text-crust-900 shadow-sm">
                             <i class="fa-solid fa-plus text-2xl mb-1"></i>
                             <span class="text-[10px] font-bold">Foto Produk</span>
@@ -707,7 +811,7 @@
     </div>
 
     <!-- MODAL: KONEKSI SUPABASE -->
-    <div id="supabaseConfigModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div id="supabaseConfigModal" class="fixed inset-0 z-[60] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="bg-white w-full max-w-md rounded-3xl p-6 shadow-2xl border border-crust-200">
             <h3 class="font-serif text-lg font-bold text-crust-900 mb-2">Pengaturan Database Supabase</h3>
             <p class="text-xs text-crust-600 mb-4">Masukkan URL dan Anon Public Key dari Dashboard Supabase Anda (Project Settings > API).</p>
@@ -729,17 +833,8 @@
         </div>
     </div>
 
-    <!-- CUSTOM TOAST NOTIFICATION -->
-    <div id="toastNotification" class="fixed bottom-5 right-5 z-50 transform translate-y-20 opacity-0 transition-all duration-300 max-w-sm w-full bg-crust-900 text-white p-4 rounded-2xl shadow-xl flex items-start gap-3 border border-crust-700 pointer-events-none">
-        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-lg mt-0.5"></i>
-        <div class="flex-grow">
-            <h4 id="toastTitle" class="font-bold text-xs">Pemberitahuan</h4>
-            <p id="toastMessage" class="text-xs text-crust-200 mt-0.5 font-light">Pesan detail</p>
-        </div>
-    </div>
-
-    <!-- CUSTOM CONFIRMATION MODAL (Replaces window.confirm) -->
-    <div id="customConfirmModal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+    <!-- CUSTOM CONFIRMATION MODAL (z-[70]) -->
+    <div id="customConfirmModal" class="fixed inset-0 z-[70] bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
         <div class="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl border border-crust-200 text-center">
             <div class="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center mx-auto mb-3 text-xl">
                 <i class="fa-solid fa-triangle-exclamation"></i>
@@ -753,30 +848,38 @@
         </div>
     </div>
 
+    <!-- CUSTOM TOAST NOTIFICATION (z-[80]) -->
+    <div id="toastNotification" class="fixed bottom-5 right-5 z-[80] transform translate-y-20 opacity-0 transition-all duration-300 max-w-sm w-full bg-crust-900 text-white p-4 rounded-2xl shadow-xl flex items-start gap-3 border border-crust-700 pointer-events-none">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-emerald-400 text-lg mt-0.5"></i>
+        <div class="flex-grow">
+            <h4 id="toastTitle" class="font-bold text-xs">Pemberitahuan</h4>
+            <p id="toastMessage" class="text-xs text-crust-200 mt-0.5 font-light">Pesan detail</p>
+        </div>
+    </div>
+
     <script>
-        // CONFIG SUPABASE PRODUCTION (Terkoneksi langsung ke Supabase PO PRODUK XOUR)
+        // KREDENSIAL SUPABASE PRODUCTION XOUR
         const DEFAULT_SUPABASE_URL = "https://zmqqoodjnfsyqgzsxrqk.supabase.co";
         const DEFAULT_SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InptcXFvb2RqbmZzeXFnenN4cnFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODk5Nzk4NjEsImV4cCI6MjEwNTU1NTg2MX0.0DXmkcFVmA1137nUteVzZjYaU-hgqvBW9AaLuuZXgA4";
 
-        // Local state
+        // State global aplikasi
         let supabaseClient = null;
-        let currentCustomer = null;
+        let currentCustomer = null; // { id, phone, name, address }
         let adminSession = null;
         let allProducts = [];
         let filteredProducts = [];
         let allOrders = [];
+        let allCustomers = [];
         let cart = [];
         let selectedProductIds = new Set();
         let currentModalProduct = null;
-        let currentSelectedVariant = null;
-        let currentModalQty = 1;
         let metricsFilter = 'all';
         let revenueChartInstance = null;
-        let currentEditingPhotos = []; // State foto galeri produk (maksimal 5 foto)
+        let currentEditingPhotos = [];
 
         let currentModalPhotos = [];
         let currentDetailPhotoIndex = 0;
-        let currentModalVariantQtys = {}; // { [variantId]: number }
+        let currentModalVariantQtys = {};
 
         // Inisialisasi saat web dimuat
         window.addEventListener('DOMContentLoaded', async () => {
@@ -799,12 +902,11 @@
                     supabaseClient = null;
                 }
             } catch (err) {
-                console.warn("Supabase init info:", err);
+                console.warn("Supabase init error:", err);
                 supabaseClient = null;
             }
         }
 
-        // Format direct image URL (Google Drive, data URL/base64, atau HTTP standard)
         function formatGoogleDriveUrl(url) {
             if (!url || typeof url !== 'string') {
                 return 'https://placehold.co/600x400/edd8be/5e371b?text=Sourdough+XOUR';
@@ -878,12 +980,14 @@
             const hash = window.location.hash.toLowerCase();
             const orderView = document.getElementById('orderView');
             const dashboardView = document.getElementById('dashboardView');
+            const productDetailView = document.getElementById('productDetailView');
             const cartBtn = document.getElementById('cartBtn');
             const navBtnOrder = document.getElementById('navBtnOrder');
             const navBtnDashboard = document.getElementById('navBtnDashboard');
 
             if (hash === '#dashboard') {
                 orderView.classList.add('hidden');
+                productDetailView.classList.add('hidden');
                 dashboardView.classList.remove('hidden');
                 cartBtn.classList.add('hidden');
                 if (navBtnOrder && navBtnDashboard) {
@@ -891,8 +995,21 @@
                     navBtnDashboard.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm bg-crust-700 text-white";
                 }
                 renderAdminDashboardState();
+            } else if (hash.startsWith('#product/')) {
+                dashboardView.classList.add('hidden');
+                orderView.classList.add('hidden');
+                productDetailView.classList.remove('hidden');
+                cartBtn.classList.remove('hidden');
+                if (navBtnOrder && navBtnDashboard) {
+                    navBtnOrder.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition shadow-sm bg-crust-700 text-white";
+                    navBtnDashboard.className = "flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition text-crust-800 hover:bg-white/60";
+                }
+
+                const productId = window.location.hash.replace('#product/', '').trim();
+                renderProductDetailPage(productId);
             } else {
                 dashboardView.classList.add('hidden');
+                productDetailView.classList.add('hidden');
                 orderView.classList.remove('hidden');
                 cartBtn.classList.remove('hidden');
                 if (navBtnOrder && navBtnDashboard) {
@@ -910,6 +1027,15 @@
             }
         }
 
+        function navigateToProduct(productId) {
+            window.location.hash = `#product/${productId}`;
+        }
+
+        function navigateToCatalog() {
+            window.location.hash = '';
+        }
+
+        // ================= SISTEM AUTH & DATABASE PELANGGAN =================
         function checkCustomerSession() {
             const saved = localStorage.getItem('XOUR_CUSTOMER_SESSION');
             if (saved) {
@@ -933,11 +1059,26 @@
                 bar.classList.add('hidden');
                 badge.classList.remove('hidden');
                 badge.classList.add('flex');
-                badgeName.textContent = currentCustomer.name || 'Pelanggan';
+                badgeName.textContent = currentCustomer.name || currentCustomer.phone;
             } else {
                 bar.classList.remove('hidden');
                 badge.classList.add('hidden');
                 badge.classList.remove('flex');
+            }
+            updateCartDeliveryInfo();
+        }
+
+        function updateCartDeliveryInfo() {
+            const nameEl = document.getElementById('cartDeliveryName');
+            const addrEl = document.getElementById('cartDeliveryAddress');
+            if (!nameEl || !addrEl) return;
+
+            if (currentCustomer) {
+                nameEl.textContent = `${currentCustomer.name || 'Nama Belum Diisi'} (${currentCustomer.phone})`;
+                addrEl.textContent = currentCustomer.address || 'Alamat belum diatur. Klik "Ubah" untuk melengkapi alamat pengiriman.';
+            } else {
+                nameEl.textContent = 'Belum Login';
+                addrEl.textContent = 'Silakan masuk untuk menentukan alamat pengantaran sourdough.';
             }
         }
 
@@ -945,9 +1086,8 @@
             const modal = document.getElementById('customerAuthModal');
             modal.classList.remove('hidden');
             modal.classList.add('flex');
-            if (currentCustomer) {
-                document.getElementById('custModalName').value = currentCustomer.name || '';
-                document.getElementById('custModalPhone').value = currentCustomer.phone || '';
+            if (currentCustomer && currentCustomer.phone) {
+                document.getElementById('custModalPhoneOnly').value = currentCustomer.phone;
             }
         }
 
@@ -957,10 +1097,10 @@
             modal.classList.remove('flex');
         }
 
-        function handleCustomerLoginSubmit(e) {
+        // Login Pelanggan CUKUP DENGAN NOMOR WHATSAPP
+        async function handleCustomerLoginSubmit(e) {
             e.preventDefault();
-            const name = document.getElementById('custModalName').value.trim();
-            const phone = document.getElementById('custModalPhone').value.trim();
+            const phone = document.getElementById('custModalPhoneOnly').value.trim();
 
             const phoneRegex = /^08[0-9]{8,13}$/;
             if (!phoneRegex.test(phone)) {
@@ -968,11 +1108,127 @@
                 return;
             }
 
-            currentCustomer = { name, phone };
-            localStorage.setItem('XOUR_CUSTOMER_SESSION', JSON.stringify(currentCustomer));
-            updateCustomerUI();
-            closeCustomerAuthModal();
-            showToast("Berhasil Masuk!", `Selamat datang, ${name}. Silakan pilih menu sourdough favorit.`);
+            const btn = document.getElementById('btnSubmitCustLogin');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Memeriksa...`;
+
+            try {
+                let customerData = { phone: phone, name: '', address: '' };
+
+                if (supabaseClient) {
+                    const { data, error } = await supabaseClient
+                        .from('customers')
+                        .select('*')
+                        .eq('phone', phone)
+                        .maybeSingle();
+
+                    if (!error && data) {
+                        customerData = data;
+                    } else {
+                        // Insert pelanggan baru ke tabel customers di Supabase
+                        const { data: newCust, error: insErr } = await supabaseClient
+                            .from('customers')
+                            .insert([{ phone: phone, name: 'Pelanggan Baru' }])
+                            .select()
+                            .single();
+
+                        if (!insErr && newCust) {
+                            customerData = newCust;
+                        }
+                    }
+                }
+
+                currentCustomer = customerData;
+                localStorage.setItem('XOUR_CUSTOMER_SESSION', JSON.stringify(currentCustomer));
+                updateCustomerUI();
+                closeCustomerAuthModal();
+
+                // Jika nama atau alamat masih kosong, langsung arahkan ke modal setting nama & alamat
+                if (!currentCustomer.name || currentCustomer.name === 'Pelanggan Baru' || !currentCustomer.address) {
+                    openCustomerProfileModal();
+                    showToast("Login Berhasil", "Silakan lengkapi nama dan alamat pengiriman Anda.");
+                } else {
+                    showToast("Selamat Datang Kembali", `Halo, ${currentCustomer.name}! Silakan pilih sourdough batch favorit.`);
+                }
+            } catch (err) {
+                console.error(err);
+                showToast("Kendala Login", "Gagal menghubungkan ke data pelanggan.", true);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = `Lanjutkan`;
+            }
+        }
+
+        function openCustomerProfileModal() {
+            if (!currentCustomer) {
+                openCustomerAuthModal();
+                return;
+            }
+
+            const modal = document.getElementById('customerProfileModal');
+            document.getElementById('profModalPhone').value = currentCustomer.phone || '';
+            document.getElementById('profModalName').value = currentCustomer.name && currentCustomer.name !== 'Pelanggan Baru' ? currentCustomer.name : '';
+            document.getElementById('profModalAddress').value = currentCustomer.address || '';
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        function closeCustomerProfileModal() {
+            const modal = document.getElementById('customerProfileModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        // Simpan Nama dan Alamat Lengkap ke Supabase
+        async function handleCustomerProfileSubmit(e) {
+            e.preventDefault();
+            if (!currentCustomer) return;
+
+            const name = document.getElementById('profModalName').value.trim();
+            const address = document.getElementById('profModalAddress').value.trim();
+
+            if (!name) {
+                showToast("Nama Wajib Diisi", "Harap isi nama lengkap pemesan.", true);
+                return;
+            }
+            if (!address) {
+                showToast("Alamat Wajib Diisi", "Harap tuliskan alamat lengkap untuk pengiriman pesanan.", true);
+                return;
+            }
+
+            const saveBtn = document.getElementById('btnSaveCustProfile');
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Menyimpan...`;
+
+            try {
+                currentCustomer.name = name;
+                currentCustomer.address = address;
+
+                if (supabaseClient) {
+                    const { error } = await supabaseClient
+                        .from('customers')
+                        .upsert({
+                            phone: currentCustomer.phone,
+                            name: name,
+                            address: address,
+                            updated_at: new Date().toISOString()
+                        }, { onConflict: 'phone' });
+
+                    if (error) throw error;
+                }
+
+                localStorage.setItem('XOUR_CUSTOMER_SESSION', JSON.stringify(currentCustomer));
+                updateCustomerUI();
+                closeCustomerProfileModal();
+                showToast("Profil & Alamat Tersimpan", "Data pemesan dan pengiriman telah berhasil disimpan.");
+            } catch (err) {
+                console.error("Gagal simpan profil pelanggan:", err);
+                showToast("Gagal Menyimpan", err.message, true);
+            } finally {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = `Simpan Data & Lanjutkan`;
+            }
         }
 
         function logoutCustomer() {
@@ -984,6 +1240,7 @@
             });
         }
 
+        // ================= KATALOG PRODUK (2 PRODUK KIRI-KANAN) =================
         async function loadProducts() {
             const loading = document.getElementById('catalogLoading');
             const empty = document.getElementById('catalogEmpty');
@@ -1063,6 +1320,8 @@
             }
 
             empty.classList.add('hidden');
+
+            // Render Kartu 2 Produk Berdampingan (Kiri Kanan Penuh)
             grid.innerHTML = list.map(prod => {
                 const variants = prod.variants || [];
                 const firstImg = variants.length > 0 && variants[0].image_url ? variants[0].image_url : (prod.photos && prod.photos[0] ? prod.photos[0] : '');
@@ -1086,34 +1345,34 @@
                 const variantNamesList = variants.map(v => v.variant_name).join(', ');
 
                 return `
-                    <div onclick="openProductDetail('${prod.id}')" class="bg-white rounded-3xl overflow-hidden border border-crust-200/80 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group cursor-pointer">
+                    <div onclick="navigateToProduct('${prod.id}')" class="bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-crust-200/80 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group cursor-pointer">
                         <div class="relative w-full aspect-square overflow-hidden bg-crust-100 flex items-center justify-center">
                             <img src="${displayImg}" alt="${prod.name || 'Produk'}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            <span class="absolute top-3 left-3 bg-crust-900/80 backdrop-blur-md text-crust-100 text-[10px] font-mono px-2.5 py-1 rounded-full font-bold uppercase tracking-wide">
+                            <span class="absolute top-2 left-2 sm:top-3 sm:left-3 bg-crust-900/80 backdrop-blur-md text-crust-100 text-[9px] sm:text-[10px] font-mono px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full font-bold uppercase tracking-wide">
                                 ${prod.code || 'PO-ITEM'}
                             </span>
                             ${isOutOfStock ? `
-                                <span class="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-center text-white font-bold text-sm">
-                                    <span class="bg-rose-600 px-3 py-1 rounded-full"><i class="fa-solid fa-clock mr-1"></i> Sold Out / Habis</span>
+                                <span class="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-center text-white font-bold text-xs sm:text-sm">
+                                    <span class="bg-rose-600 px-2.5 py-1 rounded-full"><i class="fa-solid fa-clock mr-1"></i> Habis</span>
                                 </span>
                             ` : ''}
                         </div>
-                        <div class="p-5 flex flex-col flex-grow justify-between">
+                        <div class="p-3 sm:p-4 flex flex-col flex-grow justify-between">
                             <div>
-                                <h3 class="font-serif text-lg font-bold text-crust-900 leading-snug group-hover:text-crust-700 transition">${prod.name}</h3>
+                                <h3 class="font-serif text-xs sm:text-base font-bold text-crust-900 leading-snug group-hover:text-crust-700 transition line-clamp-2">${prod.name}</h3>
                                 ${variantNamesList ? `
-                                    <p class="text-xs text-crust-500 mt-1 font-medium line-clamp-2">
+                                    <p class="text-[10px] sm:text-xs text-crust-500 mt-1 font-medium line-clamp-1 sm:line-clamp-2">
                                         ${variantNamesList}
                                     </p>
                                 ` : ''}
                             </div>
-                            <div class="mt-4 pt-3 border-t border-crust-100 flex items-center justify-between">
+                            <div class="mt-3 pt-2.5 border-t border-crust-100 flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                                 <div>
-                                    <span class="text-[11px] text-crust-500 block">Harga</span>
-                                    <span class="font-serif font-bold text-sm sm:text-base text-crust-800">${priceLabel}</span>
+                                    <span class="text-[9px] sm:text-[11px] text-crust-500 block">Harga</span>
+                                    <span class="font-serif font-bold text-xs sm:text-sm text-crust-800 leading-tight">${priceLabel}</span>
                                 </div>
-                                <button onclick="event.stopPropagation(); openProductDetail('${prod.id}')" ${isOutOfStock ? 'disabled' : ''} class="bg-crust-700 hover:bg-crust-800 disabled:bg-crust-300 disabled:cursor-not-allowed text-white text-xs font-bold px-4 py-2.5 rounded-xl shadow transition flex items-center gap-1.5">
-                                    <i class="fa-solid fa-cart-plus"></i> Tambah
+                                <button onclick="event.stopPropagation(); navigateToProduct('${prod.id}')" ${isOutOfStock ? 'disabled' : ''} class="w-full sm:w-auto bg-crust-700 hover:bg-crust-800 disabled:bg-crust-300 disabled:cursor-not-allowed text-white text-[10px] sm:text-xs font-bold px-2.5 py-1.5 sm:px-3.5 sm:py-2 rounded-xl shadow transition flex items-center justify-center gap-1">
+                                    <i class="fa-solid fa-cart-plus"></i> <span class="hidden sm:inline">Lihat Varian</span><span class="sm:hidden">Pilih</span>
                                 </button>
                             </div>
                         </div>
@@ -1122,14 +1381,17 @@
             }).join('');
         }
 
-        function openProductDetail(productId) {
-            const prod = allProducts.find(p => p.id === productId);
-            if (!prod) return;
+        // ================= HALAMAN DETAIL PRODUK KHUSUS (#product/:id) =================
+        function renderProductDetailPage(productId) {
+            const prod = allProducts.find(p => String(p.id) === String(productId));
+            if (!prod) {
+                navigateToCatalog();
+                return;
+            }
 
             currentModalProduct = prod;
             currentModalVariantQtys = {};
 
-            // Kumpulkan seluruh foto unik untuk slider (galeri produk + foto seluruh varian)
             const photoList = [];
             if (Array.isArray(prod.photos)) {
                 prod.photos.forEach(url => {
@@ -1148,7 +1410,6 @@
             currentModalPhotos = photoList;
             currentDetailPhotoIndex = 0;
 
-            const modal = document.getElementById('productDetailModal');
             const codeEl = document.getElementById('detailModalCode');
             const titleEl = document.getElementById('detailModalTitle');
             const descEl = document.getElementById('detailModalDesc');
@@ -1160,10 +1421,8 @@
             
             if (prod.description && prod.description.trim()) {
                 descEl.textContent = prod.description;
-                descEl.classList.remove('hidden');
             } else {
-                descEl.textContent = 'Roti sourdough artisanal segar yang dipanggang dengan fermentasi alami.';
-                descEl.classList.remove('hidden');
+                descEl.textContent = 'Roti sourdough artisanal segar yang dipanggang dengan fermentasi lambat alami.';
             }
 
             if (prod.bake_date) {
@@ -1179,10 +1438,8 @@
                 noticeEl.textContent = '(Stok Per Varian)';
             }
 
-            // Inisialisasi slider foto
             setupDetailPhotoSlider();
 
-            // Inisialisasi kuantitas 0 untuk setiap varian
             const variants = prod.variants || [];
             variants.forEach(v => {
                 currentModalVariantQtys[v.id] = 0;
@@ -1191,15 +1448,14 @@
             renderDetailVariantsList();
             updateDetailModalSummary();
 
-            modal.classList.remove('hidden');
-            modal.classList.add('flex');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
         function setupDetailPhotoSlider() {
             const track = document.getElementById('detailSliderTrack');
             const prevBtn = document.getElementById('sliderPrevBtn');
             const nextBtn = document.getElementById('sliderNextBtn');
-            const counterText = document.getElementById('sliderCounterText');
+            const thumbContainer = document.getElementById('detailThumbnailList');
 
             track.innerHTML = currentModalPhotos.map(url => `
                 <div class="w-full h-full flex-shrink-0 flex items-center justify-center bg-crust-50">
@@ -1220,9 +1476,22 @@
                 nextBtn.classList.remove('flex');
             }
 
+            if (thumbContainer) {
+                if (total > 1) {
+                    thumbContainer.innerHTML = currentModalPhotos.map((url, idx) => `
+                        <button type="button" onclick="goToDetailPhoto(${idx})" class="w-12 h-12 rounded-xl overflow-hidden border-2 transition-all flex-shrink-0 ${idx === currentDetailPhotoIndex ? 'border-crust-700 ring-2 ring-crust-700/40' : 'border-crust-200 opacity-70 hover:opacity-100'}">
+                            <img src="${formatGoogleDriveUrl(url)}" class="w-full h-full object-cover">
+                        </button>
+                    `).join('');
+                    thumbContainer.classList.remove('hidden');
+                } else {
+                    thumbContainer.innerHTML = '';
+                    thumbContainer.classList.add('hidden');
+                }
+            }
+
             updateSliderPosition();
 
-            // Pasang gesture sentuh geser (Touch Swipe Gesture)
             let touchStartX = 0;
             let touchEndX = 0;
             track.ontouchstart = (e) => {
@@ -1230,9 +1499,9 @@
             };
             track.ontouchend = (e) => {
                 touchEndX = e.changedTouches[0].screenX;
-                if (touchStartX - touchEndX > 45) {
+                if (touchStartX - touchEndX > 40) {
                     nextDetailPhoto();
-                } else if (touchEndX - touchStartX > 45) {
+                } else if (touchEndX - touchStartX > 40) {
                     prevDetailPhoto();
                 }
             };
@@ -1241,10 +1510,23 @@
         function updateSliderPosition() {
             const track = document.getElementById('detailSliderTrack');
             const counterText = document.getElementById('sliderCounterText');
+            const thumbContainer = document.getElementById('detailThumbnailList');
+
             if (!track) return;
             track.style.transform = `translateX(-${currentDetailPhotoIndex * 100}%)`;
             if (counterText) {
                 counterText.textContent = `${currentDetailPhotoIndex + 1} / ${currentModalPhotos.length}`;
+            }
+
+            if (thumbContainer) {
+                const buttons = thumbContainer.querySelectorAll('button');
+                buttons.forEach((btn, idx) => {
+                    if (idx === currentDetailPhotoIndex) {
+                        btn.className = "w-12 h-12 rounded-xl overflow-hidden border-2 border-crust-700 ring-2 ring-crust-700/40 transition-all flex-shrink-0";
+                    } else {
+                        btn.className = "w-12 h-12 rounded-xl overflow-hidden border-2 border-crust-200 opacity-70 hover:opacity-100 transition-all flex-shrink-0";
+                    }
+                });
             }
         }
 
@@ -1257,6 +1539,11 @@
         function nextDetailPhoto() {
             if (currentModalPhotos.length <= 1) return;
             currentDetailPhotoIndex = (currentDetailPhotoIndex + 1) % currentModalPhotos.length;
+            updateSliderPosition();
+        }
+
+        function goToDetailPhoto(index) {
+            currentDetailPhotoIndex = index;
             updateSliderPosition();
         }
 
@@ -1290,30 +1577,29 @@
                 const varThumb = v.image_url ? formatGoogleDriveUrl(v.image_url) : '';
 
                 return `
-                    <div class="p-3 rounded-2xl border transition-all ${isSelected ? 'border-crust-700 bg-crust-50 ring-1 ring-crust-700/50 shadow-sm' : 'border-crust-200 bg-white'} flex items-center justify-between gap-3">
-                        <div class="flex items-center gap-2.5 min-w-0 flex-grow cursor-pointer" onclick="switchSliderToPhotoUrl('${v.image_url}')">
+                    <div class="p-3.5 rounded-2xl border transition-all ${isSelected ? 'border-crust-700 bg-crust-50 ring-1 ring-crust-700/40 shadow-sm' : 'border-crust-200 bg-white hover:border-crust-300'} flex items-center justify-between gap-3">
+                        <div class="flex items-center gap-3 min-w-0 flex-grow cursor-pointer" onclick="switchSliderToPhotoUrl('${v.image_url}')">
                             ${varThumb ? `
                                 <img src="${varThumb}" class="w-12 h-12 rounded-xl object-cover border border-crust-200 flex-shrink-0" title="Klik untuk lihat foto varian">
                             ` : `
-                                <div class="w-12 h-12 rounded-xl bg-crust-100 flex items-center justify-center text-crust-400 text-xs flex-shrink-0">
+                                <div class="w-12 h-12 rounded-xl bg-crust-100 flex items-center justify-center text-crust-500 text-xs flex-shrink-0">
                                     <i class="fa-solid fa-bread-slice"></i>
                                 </div>
                             `}
-                            <div class="truncate">
-                                <h4 class="font-bold text-xs text-crust-900 truncate leading-tight">${v.variant_name}</h4>
-                                <span class="font-serif font-bold text-xs text-crust-800 block mt-0.5">${formatRupiah(v.price)}</span>
-                                <span class="text-[10px] ${isOutOfStock ? 'text-rose-600 font-bold' : 'text-crust-500'}">
+                            <div class="min-w-0 flex-grow pr-1">
+                                <h4 class="font-bold text-xs sm:text-sm text-crust-900 break-words leading-snug">${v.variant_name}</h4>
+                                <span class="font-serif font-bold text-xs sm:text-sm text-crust-800 block mt-0.5">${formatRupiah(v.price)}</span>
+                                <span class="text-[10px] sm:text-xs ${isOutOfStock ? 'text-rose-600 font-bold' : 'text-crust-500'} block">
                                     ${isOutOfStock ? 'Habis' : `Stok: ${maxStock} pcs`}
                                 </span>
                             </div>
                         </div>
 
-                        <!-- Stepper Kuantitas Mandiri Tiap Varian -->
-                        <div class="flex items-center gap-1.5 flex-shrink-0">
-                            <button type="button" onclick="adjustVariantQty('${v.id}', -1)" ${qty <= 0 ? 'disabled' : ''} class="w-8 h-8 rounded-xl bg-crust-100 hover:bg-crust-200 disabled:opacity-40 disabled:hover:bg-crust-100 text-crust-800 flex items-center justify-center font-bold text-sm transition">
+                        <div class="flex items-center gap-1.5 flex-shrink-0 ml-1">
+                            <button type="button" onclick="adjustVariantQty('${v.id}', -1)" ${qty <= 0 ? 'disabled' : ''} class="w-8 h-8 rounded-xl bg-crust-100 hover:bg-crust-200 disabled:opacity-30 text-crust-800 flex items-center justify-center font-bold text-sm transition">
                                 -
                             </button>
-                            <span id="qtyBadge_${v.id}" class="font-bold text-xs w-6 text-center text-crust-900">${qty}</span>
+                            <span id="qtyBadge_${v.id}" class="font-bold text-xs sm:text-sm w-6 text-center text-crust-900">${qty}</span>
                             <button type="button" onclick="adjustVariantQty('${v.id}', 1)" ${isOutOfStock ? 'disabled' : ''} class="w-8 h-8 rounded-xl bg-crust-700 hover:bg-crust-800 disabled:bg-crust-300 text-white flex items-center justify-center font-bold text-sm transition shadow-sm">
                                 +
                             </button>
@@ -1385,29 +1671,19 @@
                 countLabel.textContent = "0 varian dipilih";
                 totalEl.textContent = "Rp 0";
                 addBtn.disabled = true;
-                addBtn.className = "bg-crust-300 cursor-not-allowed text-white font-bold text-xs sm:text-sm px-6 py-2.5 rounded-xl transition flex items-center gap-2";
+                addBtn.className = "bg-crust-300 cursor-not-allowed text-white font-bold text-xs sm:text-sm px-5 py-3 rounded-2xl transition flex items-center gap-2";
             } else {
                 countLabel.textContent = `${variantCount} varian (${totalQty} pcs) dipilih`;
                 totalEl.textContent = formatRupiah(totalPrice);
                 addBtn.disabled = false;
-                addBtn.className = "bg-crust-700 hover:bg-crust-800 text-white font-bold text-xs sm:text-sm px-6 py-2.5 rounded-xl shadow transition flex items-center gap-2";
+                addBtn.className = "bg-crust-700 hover:bg-crust-800 text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-2xl shadow-md hover:shadow-lg transition flex items-center gap-2";
             }
-        }
-
-        function closeProductDetailModal() {
-            const modal = document.getElementById('productDetailModal');
-            modal.classList.add('hidden');
-            modal.classList.remove('flex');
-            currentModalProduct = null;
-            currentSelectedVariant = null;
-            currentModalVariantQtys = {};
-            currentModalPhotos = [];
         }
 
         function confirmAddToCart() {
             if (!currentCustomer) {
                 openCustomerAuthModal();
-                showToast("Masuk untuk Memesan", "Silakan masukkan nama dan nomor WhatsApp Anda terlebih dahulu.", true);
+                showToast("Masuk untuk Memesan", "Masukkan nomor WhatsApp Anda terlebih dahulu.", true);
                 return;
             }
 
@@ -1460,9 +1736,14 @@
                 }
             });
 
+            variants.forEach(v => {
+                currentModalVariantQtys[v.id] = 0;
+            });
+            renderDetailVariantsList();
+            updateDetailModalSummary();
+
             updateCartBadge();
-            closeProductDetailModal();
-            showToast("Ditambahkan ke Keranjang", `${totalAddedPcs} pcs ${prodName} (${selectedItems.length} varian) berhasil masuk keranjang.`);
+            showToast("Ditambahkan ke Keranjang", `${totalAddedPcs} pcs ${prodName} berhasil masuk ke keranjang.`);
         }
 
         function updateCartBadge() {
@@ -1474,6 +1755,7 @@
         function toggleCartModal(show) {
             const modal = document.getElementById('cartModal');
             if (show) {
+                updateCartDeliveryInfo();
                 renderCartList();
                 modal.classList.remove('hidden');
                 modal.classList.add('flex');
@@ -1551,16 +1833,23 @@
             renderCartList();
         }
 
+        // ================= CHECKOUT PESANAN (WAJIB NAMA & ALAMAT) =================
         async function submitOrder() {
             if (cart.length === 0) {
                 showToast("Keranjang Kosong", "Silakan pilih minimal 1 sourdough sebelum memesan.", true);
                 return;
             }
 
-            if (!currentCustomer) {
-                toggleCartModal(false);
+            if (!currentCustomer || !currentCustomer.phone) {
                 openCustomerAuthModal();
-                showToast("Masuk Terlebih Dahulu", "Silakan login nama dan nomor WhatsApp Anda.", true);
+                showToast("Masuk Terlebih Dahulu", "Silakan masukkan nomor WhatsApp Anda.", true);
+                return;
+            }
+
+            // Validasi kelengkapan Nama & Alamat Pengiriman
+            if (!currentCustomer.name || currentCustomer.name === 'Pelanggan Baru' || !currentCustomer.address) {
+                openCustomerProfileModal();
+                showToast("Lengkapi Alamat", "Mohon isi nama lengkap dan alamat pengiriman sebelum order.", true);
                 return;
             }
 
@@ -1568,8 +1857,10 @@
             const totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
 
             const newOrderPayload = {
+                customer_id: currentCustomer.id || null,
                 customer_name: currentCustomer.name,
                 customer_phone: currentCustomer.phone,
+                customer_address: currentCustomer.address,
                 total_amount: totalAmount,
                 total_qty: totalQty,
                 status: 'baru',
@@ -1578,7 +1869,7 @@
 
             const submitBtn = document.getElementById('submitOrderBtn');
             submitBtn.disabled = true;
-            submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Mengirim Orderan...`;
+            submitBtn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Memproses Pesanan...`;
 
             try {
                 let orderId = 'ORD-' + Date.now().toString().slice(-6);
@@ -1610,6 +1901,7 @@
 
                     if (itemsErr) throw itemsErr;
 
+                    // Pengurangan stok otomatis
                     for (const item of cart) {
                         if (item.stockMode === 'shared') {
                             await supabaseClient.rpc('decrement_shared_stock', { p_id: item.productId, p_qty: item.qty });
@@ -1625,10 +1917,12 @@
                     });
                 }
 
+                // Format chat WhatsApp lengkap dengan alamat pengiriman
                 let waMessage = `Halo Admin *PO PRODUK XOUR*, saya ingin konfirmasi pesanan:\n\n`;
                 waMessage += `*No. Order:* #${orderId}\n`;
                 waMessage += `*Nama Pemesan:* ${currentCustomer.name}\n`;
-                waMessage += `*No. WhatsApp:* ${currentCustomer.phone}\n\n`;
+                waMessage += `*No. WhatsApp:* ${currentCustomer.phone}\n`;
+                waMessage += `*Alamat Pengiriman:*\n${currentCustomer.address}\n\n`;
                 waMessage += `*Rincian Sourdough:*\n`;
                 cart.forEach((i, idx) => {
                     waMessage += `${idx + 1}. ${i.productName} (${i.variantName}) x${i.qty} = ${formatRupiah(i.price * i.qty)}\n`;
@@ -1640,7 +1934,7 @@
                 toggleCartModal(false);
 
                 await loadProducts();
-                showToast("Order Berhasil Dibuat!", "Pesanan telah dicatat di sistem.");
+                showToast("Order Berhasil Dibuat!", "Pesanan telah tersimpan di sistem.");
 
                 const encodedMsg = encodeURIComponent(waMessage);
                 window.open(`https://wa.me/6281234567890?text=${encodedMsg}`, '_blank');
@@ -1654,6 +1948,7 @@
             }
         }
 
+        // ================= DASHBOARD ADMIN =================
         function checkAdminSession() {
             const saved = localStorage.getItem('XOUR_ADMIN_AUTH');
             if (saved) {
@@ -1675,6 +1970,7 @@
                 document.getElementById('currentAdminName').textContent = adminSession.full_name || adminSession.username;
                 switchAdminTab('metrics');
                 fetchOrders();
+                fetchCustomers();
                 fetchAdminUsers();
             } else {
                 wall.classList.remove('hidden');
@@ -1728,10 +2024,11 @@
         }
 
         function switchAdminTab(tabName) {
-            const tabs = ['metrics', 'orders', 'products', 'users'];
+            const tabs = ['metrics', 'orders', 'products', 'customers', 'users'];
             tabs.forEach(t => {
                 const content = document.getElementById(`tabContent-${t}`);
                 const btn = document.getElementById(`tabBtn-${t}`);
+                if (!content || !btn) return;
                 if (t === tabName) {
                     content.classList.remove('hidden');
                     btn.className = "admin-tab-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition bg-crust-700 text-white shadow-sm";
@@ -1747,6 +2044,8 @@
                 renderOrdersTable();
             } else if (tabName === 'products') {
                 renderProductsAdminTable();
+            } else if (tabName === 'customers') {
+                fetchCustomers();
             } else if (tabName === 'users') {
                 renderUsersTable();
             }
@@ -1896,7 +2195,8 @@
             if (search) {
                 list = list.filter(o => 
                     (o.customer_name && o.customer_name.toLowerCase().includes(search)) ||
-                    (o.customer_phone && o.customer_phone.includes(search))
+                    (o.customer_phone && o.customer_phone.includes(search)) ||
+                    (o.customer_address && o.customer_address.toLowerCase().includes(search))
                 );
             }
 
@@ -1941,6 +2241,11 @@
                                     <span>•</span>
                                     <span>${o.created_at ? new Date(o.created_at).toLocaleString('id-ID') : '-'}</span>
                                 </div>
+                                ${o.customer_address ? `
+                                    <p class="text-xs text-crust-700 mt-1 bg-crust-50 p-2 rounded-lg border border-crust-200/60 leading-relaxed">
+                                        <i class="fa-solid fa-location-dot text-rose-500 mr-1"></i> <strong>Alamat:</strong> ${o.customer_address}
+                                    </p>
+                                ` : ''}
                             </div>
                             <div class="flex items-center gap-2">
                                 <button onclick="updateOrderStatus('${o.id}', 'diproses')" class="bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-300 text-xs font-semibold px-3 py-1.5 rounded-xl transition">
@@ -1996,6 +2301,89 @@
             showToast("Status Diperbarui", `Pesanan telah ditandai '${newStatus}'.`);
         }
 
+        // ================= DATABASE PELANGGAN (TAB DASHBOARD) =================
+        async function fetchCustomers() {
+            if (supabaseClient) {
+                try {
+                    const { data, error } = await supabaseClient
+                        .from('customers')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+
+                    if (!error && data) {
+                        allCustomers = data;
+                    }
+                } catch (err) {
+                    console.error("Gagal mengambil data pelanggan:", err);
+                }
+            } else {
+                allCustomers = [
+                    { id: 'c1', phone: '081234567890', name: 'Sarah Wijaya', address: 'Jl. Roti Kencana No. 5, Kebayoran Baru, Jakarta Selatan', created_at: new Date().toISOString() }
+                ];
+            }
+            renderCustomersTable();
+        }
+
+        function renderCustomersTable() {
+            const tbody = document.getElementById('customersTableBody');
+            const search = (document.getElementById('customerSearchInput')?.value || '').toLowerCase();
+            const badgeCount = document.getElementById('badgeCustomerCount');
+
+            if (badgeCount) badgeCount.textContent = allCustomers.length;
+            if (!tbody) return;
+
+            let list = [...allCustomers];
+            if (search) {
+                list = list.filter(c => 
+                    (c.name && c.name.toLowerCase().includes(search)) ||
+                    (c.phone && c.phone.includes(search)) ||
+                    (c.address && c.address.toLowerCase().includes(search))
+                );
+            }
+
+            if (list.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="p-8 text-center text-crust-400">Belum ada data pelanggan yang tercatat.</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = list.map(c => {
+                let cleanPhone = (c.phone || '').replace(/[^0-9]/g, '');
+                if (cleanPhone.startsWith('0')) cleanPhone = '62' + cleanPhone.slice(1);
+
+                // Hitung total order dari customer ini
+                const custOrders = allOrders.filter(o => o.customer_phone === c.phone);
+                const orderCount = custOrders.length;
+                const totalSpent = custOrders.reduce((sum, o) => sum + Number(o.total_amount || 0), 0);
+
+                return `
+                    <tr class="hover:bg-crust-50/80 transition">
+                        <td class="p-3">
+                            <a href="https://wa.me/${cleanPhone}" target="_blank" class="text-emerald-700 hover:text-emerald-900 font-semibold font-mono flex items-center gap-1.5">
+                                <i class="fa-brands fa-whatsapp text-sm text-emerald-600"></i> ${c.phone}
+                            </a>
+                        </td>
+                        <td class="p-3 font-bold text-crust-900">${c.name || '<span class="text-crust-400 font-normal">Belum diisi</span>'}</td>
+                        <td class="p-3 text-crust-700 max-w-xs break-words leading-relaxed">${c.address || '<span class="text-crust-400">Belum diisi</span>'}</td>
+                        <td class="p-3">
+                            <span class="font-bold text-crust-900 block">${orderCount} pesanan</span>
+                            <span class="text-[10px] text-crust-500 font-mono">${formatRupiah(totalSpent)}</span>
+                        </td>
+                        <td class="p-3 text-crust-500 text-[11px] whitespace-nowrap">${c.created_at ? new Date(c.created_at).toLocaleDateString('id-ID') : '-'}</td>
+                        <td class="p-3 text-right">
+                            <a href="https://wa.me/${cleanPhone}?text=Halo%20${encodeURIComponent(c.name || 'Kak')}!%20Terima%20kasih%20telah%20menjadi%20pelanggan%20PO%20PROKDUK%20XOUR." target="_blank" class="p-1.5 text-emerald-700 hover:bg-emerald-100 rounded-lg inline-flex items-center gap-1" title="Chat WhatsApp">
+                                <i class="fa-solid fa-comment-dots"></i> Chat
+                            </a>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // ================= MASTER PRODUK & VARIAN =================
         function renderProductsAdminTable() {
             const tbody = document.getElementById('productsTableBody');
             if (!tbody) return;
@@ -2232,7 +2620,6 @@
             });
         }
 
-        // Kompresi gambar agar performa hemat memori & cepat disimpan
         function compressImage(base64Str, maxWidth, callback) {
             const img = new Image();
             img.src = base64Str;
@@ -2653,8 +3040,8 @@
                 try {
                     const data = new Uint8Array(e.target.result);
                     const workbook = XLSX.read(data, { type: 'array' });
-                    const firstSheet = workbook.Sheets[workbook.SheetNames[0]];
-                    const rows = XLSX.utils.sheet_to_json(firstSheet);
+                    const firstSheet = workbook.SheetNames[0];
+                    const rows = XLSX.utils.sheet_to_json(workbook.Sheets[firstSheet]);
 
                     if (rows.length === 0) {
                         showToast("File Kosong", "Tidak ditemukan data pada sheet Excel.", true);
@@ -2721,6 +3108,7 @@
             reader.readAsArrayBuffer(file);
         }
 
+        // ================= MASTER USER ADMIN =================
         let adminUsersList = [];
 
         async function fetchAdminUsers() {
@@ -2874,6 +3262,7 @@
             closeSupabaseSettingsModal();
             loadProducts();
             fetchOrders();
+            fetchCustomers();
             fetchAdminUsers();
             showToast("Konfigurasi Tersimpan", "Koneksi Supabase berhasil diperbarui.");
         }
