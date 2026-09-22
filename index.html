@@ -133,8 +133,8 @@
         </div>
     </header>
 
-    <!-- Navigasi Bar Cepat (Untuk Pengujian Pindah Halaman) -->
-    <div class="bg-crust-100/90 border-b border-crust-200 px-3 sm:px-6 lg:px-8 py-2 sticky top-[53px] sm:top-[65px] z-30 backdrop-blur-sm shadow-sm max-w-full">
+    <!-- Navigasi Bar Cepat (Untuk Pengujian Pindah Halaman) - Disembunyikan -->
+    <div id="quickNavSwitcher" class="hidden bg-crust-100/90 border-b border-crust-200 px-3 sm:px-6 lg:px-8 py-2 sticky top-[53px] sm:top-[65px] z-30 backdrop-blur-sm shadow-sm max-w-full">
         <div class="max-w-7xl 2xl:max-w-[1600px] mx-auto flex items-center justify-between gap-2">
             <div class="flex items-center gap-2 text-xs text-crust-800 font-semibold">
                 <span class="inline-flex items-center justify-center w-6 h-6 rounded-lg bg-accent/20 text-accent font-bold text-xs">
@@ -256,7 +256,7 @@
                 <div class="space-y-4">
                     <div>
                         <div class="flex items-center gap-2">
-                            <span id="detailModalCode" class="text-[11px] font-mono text-crust-600 bg-crust-100 px-2 py-0.5 rounded-md font-bold uppercase tracking-wider">KODE-ITEM</span>
+                            <span id="detailModalCode" class="hidden text-[11px] font-mono text-crust-600 bg-crust-100 px-2 py-0.5 rounded-md font-bold uppercase tracking-wider">KODE-ITEM</span>
                             <span id="detailStockModeNotice" class="text-[11px] text-crust-500 font-medium"></span>
                         </div>
                         <h2 id="detailModalTitle" class="font-serif text-xl sm:text-2xl font-bold text-crust-900 mt-2 leading-snug break-words">Nama Produk</h2>
@@ -1827,9 +1827,6 @@
                     <div onclick="navigateToProduct('${prod.id}')" class="bg-white rounded-2xl sm:rounded-3xl overflow-hidden border border-crust-200/80 shadow-sm hover:shadow-md transition-all duration-300 flex flex-col group cursor-pointer">
                         <div class="relative w-full aspect-square overflow-hidden bg-crust-100 flex items-center justify-center">
                             <img src="${displayImg}" alt="${prod.name || 'Produk'}" loading="lazy" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                            <span class="absolute top-2 left-2 sm:top-3 sm:left-3 bg-crust-900/80 backdrop-blur-md text-crust-100 text-[9px] sm:text-[10px] font-mono px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full font-bold uppercase tracking-wide">
-                                ${prod.code || 'PO-ITEM'}
-                            </span>
                             ${isOutOfStock ? `
                                 <span class="absolute inset-0 bg-black/60 backdrop-blur-[2px] flex items-center justify-center text-white font-bold text-xs sm:text-sm">
                                     <span class="bg-rose-600 px-2.5 py-1 rounded-full"><i class="fa-solid fa-clock mr-1"></i> Habis</span>
